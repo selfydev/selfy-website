@@ -72,7 +72,7 @@ const Header = () => {
         {/* Logo */}
         <Link
           href="/"
-          className={`font-[family-name:var(--font-helvetica-now)] text-2xl font-bold tracking-tight transition-colors duration-300 ${textColor}`}
+          className={`font-[family-name:var(--font-helvetica-now)] text-2xl font-medium tracking-tight transition-colors duration-300 ${textColor}`}
           aria-label="Selfy Home"
         >
           Selfy.
