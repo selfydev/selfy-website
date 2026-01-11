@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const navLinks = [
   { href: "#how-it-works", label: "How it works" },
@@ -70,12 +71,27 @@ const Header = () => {
     >
       <div className="mx-auto flex items-center justify-between px-6 py-3 lg:px-24">
         {/* Logo */}
-        <Link
-          href="/"
-          className={`font-[family-name:var(--font-helvetica-now)] text-2xl font-medium tracking-tight transition-colors duration-300 ${textColor}`}
-          aria-label="Selfy Home"
-        >
-          Selfy.
+        <Link href="/" aria-label="Selfy Home" className="relative">
+          <Image
+            src="/images/logo-white.svg"
+            alt="Selfy"
+            width={80}
+            height={32}
+            className={`h-8 w-auto transition-opacity duration-300 ${
+              isScrolled ? "opacity-0" : "opacity-100"
+            }`}
+            priority
+          />
+          <Image
+            src="/images/logo-black.svg"
+            alt="Selfy"
+            width={80}
+            height={32}
+            className={`absolute top-0 left-0 h-8 w-auto transition-opacity duration-300 ${
+              isScrolled ? "opacity-100" : "opacity-0"
+            }`}
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation */}
