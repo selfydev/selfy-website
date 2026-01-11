@@ -103,7 +103,7 @@ const Header = () => {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-[16px] font-medium transition-opacity duration-300 group-hover:opacity-50 hover:!opacity-100 ${textColor}`}
+              className={`font-[family-name:var(--font-helvetica-now)] text-[16px] font-medium transition-opacity duration-300 group-hover:opacity-50 hover:!opacity-100 ${textColor}`}
             >
               {link.label}
             </Link>
@@ -114,13 +114,13 @@ const Header = () => {
         <div className="hidden lg:flex items-center gap-4">
           <Link
             href="#signup"
-            className={`text-[16px] font-medium hover:opacity-70 transition-opacity duration-300 ${textColor}`}
+            className={`font-[family-name:var(--font-helvetica-now)] text-[16px] font-medium hover:opacity-70 transition-opacity duration-300 ${textColor}`}
           >
             Sign up
           </Link>
           <Link
             href="#login"
-            className={`text-[16px] font-medium px-6 py-2.5 rounded-full transition-all duration-300 ${
+            className={`font-[family-name:var(--font-helvetica-now)] text-[16px] font-medium px-6 py-2.5 rounded-full transition-all duration-300 ${
               isScrolled
                 ? "bg-black text-white hover:bg-black/80"
                 : "bg-white text-black hover:bg-white/90"
