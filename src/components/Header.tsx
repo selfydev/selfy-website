@@ -13,6 +13,7 @@ const navLinks = [
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -20,13 +21,20 @@ const Header = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY < 100) {
+      // Check if at top of page
+      if (currentScrollY < 50) {
+        setIsAtTop(true);
         setIsVisible(true);
-      } else if (currentScrollY > lastScrollY) {
-        setIsVisible(false);
-        setIsMenuOpen(false);
       } else {
-        setIsVisible(true);
+        setIsAtTop(false);
+
+        // Hide on scroll down, show on scroll up
+        if (currentScrollY > lastScrollY) {
+          setIsVisible(false);
+          setIsMenuOpen(false);
+        } else {
+          setIsVisible(true);
+        }
       }
 
       setLastScrollY(currentScrollY);
@@ -47,17 +55,24 @@ const Header = () => {
     }
   };
 
+  // Dynamic styles based on scroll state
+  const isScrolled = !isAtTop && isVisible;
+  const textColor = isScrolled ? "text-black" : "text-white";
+  const borderColor = isScrolled ? "border-black" : "border-white";
+  const hoverBg = isScrolled ? "hover:bg-black hover:text-white" : "hover:bg-white hover:text-black";
+  const hamburgerBg = isScrolled ? "bg-black" : "bg-white";
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
-      }`}
+      } ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}
     >
       <div className="mx-auto flex items-center justify-between px-6 py-5 lg:px-12">
         {/* Logo */}
         <Link
           href="/"
-          className="font-[family-name:var(--font-helvetica-now)] text-2xl font-bold text-white tracking-tight"
+          className={`font-[family-name:var(--font-helvetica-now)] text-2xl font-bold tracking-tight transition-colors duration-300 ${textColor}`}
           aria-label="Selfy Home"
         >
           Selfy.
@@ -72,7 +87,7 @@ const Header = () => {
             <Link
               key={link.href}
               href={link.href}
-              className="text-white text-sm font-medium hover:opacity-80 transition-opacity"
+              className={`text-sm font-medium hover:opacity-80 transition-all duration-300 ${textColor}`}
             >
               {link.label}
             </Link>
@@ -83,13 +98,13 @@ const Header = () => {
         <div className="hidden lg:flex items-center gap-4">
           <Link
             href="#signup"
-            className="text-white text-sm font-medium hover:opacity-80 transition-opacity"
+            className={`text-sm font-medium hover:opacity-80 transition-all duration-300 ${textColor}`}
           >
             Sign up
           </Link>
           <Link
             href="#login"
-            className="text-white text-sm font-medium px-6 py-2.5 border border-white rounded-full hover:bg-white hover:text-black transition-all"
+            className={`text-sm font-medium px-6 py-2.5 border rounded-full transition-all duration-300 ${textColor} ${borderColor} ${hoverBg}`}
           >
             Login
           </Link>
@@ -106,17 +121,17 @@ const Header = () => {
           tabIndex={0}
         >
           <span
-            className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
+            className={`block w-6 h-0.5 transition-all duration-300 ${hamburgerBg} ${
               isMenuOpen ? "rotate-45 translate-y-2" : ""
             }`}
           />
           <span
-            className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
+            className={`block w-6 h-0.5 transition-all duration-300 ${hamburgerBg} ${
               isMenuOpen ? "opacity-0" : ""
             }`}
           />
           <span
-            className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
+            className={`block w-6 h-0.5 transition-all duration-300 ${hamburgerBg} ${
               isMenuOpen ? "-rotate-45 -translate-y-2" : ""
             }`}
           />
@@ -125,16 +140,18 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-md transition-all duration-300 overflow-hidden ${
-          isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`lg:hidden absolute top-full left-0 right-0 backdrop-blur-md transition-all duration-300 overflow-hidden ${
+          isScrolled ? "bg-white/95" : "bg-black/95"
+        } ${isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"}`}
       >
         <nav className="flex flex-col px-6 py-6" aria-label="Mobile navigation">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-white text-lg py-3 border-b border-white/10 hover:opacity-80 transition-opacity"
+              className={`text-lg py-3 border-b hover:opacity-80 transition-opacity ${
+                isScrolled ? "text-black border-black/10" : "text-white border-white/10"
+              }`}
               onClick={() => setIsMenuOpen(false)}
             >
               {link.label}
@@ -143,14 +160,20 @@ const Header = () => {
           <div className="flex flex-col gap-3 mt-6">
             <Link
               href="#signup"
-              className="text-white text-lg hover:opacity-80 transition-opacity"
+              className={`text-lg hover:opacity-80 transition-opacity ${
+                isScrolled ? "text-black" : "text-white"
+              }`}
               onClick={() => setIsMenuOpen(false)}
             >
               Sign up
             </Link>
             <Link
               href="#login"
-              className="text-white text-lg font-medium px-6 py-3 border border-white rounded-full text-center hover:bg-white hover:text-black transition-all"
+              className={`text-lg font-medium px-6 py-3 border rounded-full text-center transition-all ${
+                isScrolled
+                  ? "text-black border-black hover:bg-black hover:text-white"
+                  : "text-white border-white hover:bg-white hover:text-black"
+              }`}
               onClick={() => setIsMenuOpen(false)}
             >
               Login
