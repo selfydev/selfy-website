@@ -65,6 +65,11 @@ const Hero = () => {
 
         {/* Bottom Features Bar */}
         <div className="pb-8 md:pb-12 animate-fade-in-up animation-delay-300">
+          <div
+            className="h-px w-full mb-6 md:mb-8"
+            style={{ backgroundColor: "rgba(248, 248, 245, 0.15)" }}
+            aria-hidden="true"
+          />
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             {features.map((feature, index) => (
               <div key={index} className="flex items-start gap-3">
