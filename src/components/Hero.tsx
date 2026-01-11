@@ -41,7 +41,7 @@ const Hero = () => {
         <div className="flex-1 flex items-center pt-20">
           <div className="animate-fade-in-up">
             {/* Headline */}
-            <h1 className="font-[family-name:var(--font-helvetica-now)] text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium text-white leading-[0.95] tracking-tight max-w-4xl">
+            <h1 className="font-[family-name:var(--font-helvetica-now)] text-5xl sm:text-6xl md:text-7xl lg:text-[120px] font-medium text-white leading-[0.95] tracking-[-3px] max-w-4xl">
               Moments,
               <br />
               reinvented
