@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const inter = Inter({
@@ -8,18 +9,32 @@ const inter = Inter({
   display: "swap",
 });
 
-// TODO: Add Helvetica Now Display font files to src/fonts/ and uncomment:
-// import localFont from "next/font/local";
-// const helveticaNowDisplay = localFont({
-//   src: [
-//     { path: "../fonts/HelveticaNowDisplay-Regular.woff2", weight: "400", style: "normal" },
-//     { path: "../fonts/HelveticaNowDisplay-Medium.woff2", weight: "500", style: "normal" },
-//     { path: "../fonts/HelveticaNowDisplay-Bold.woff2", weight: "700", style: "normal" },
-//     { path: "../fonts/HelveticaNowDisplay-ExtraBold.woff2", weight: "800", style: "normal" },
-//   ],
-//   variable: "--font-helvetica-now",
-//   display: "swap",
-// });
+const helveticaNowDisplay = localFont({
+  src: [
+    {
+      path: "../fonts/HelveticaNowDisplay-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../fonts/HelveticaNowDisplay-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/HelveticaNowDisplay-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../fonts/HelveticaNowDisplay-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-helvetica-now",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Selfy | Open Air Photo Booth Rental UK",
@@ -34,7 +49,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
+      <body
+        className={`${inter.variable} ${helveticaNowDisplay.variable} antialiased`}
+      >
         {children}
       </body>
     </html>
