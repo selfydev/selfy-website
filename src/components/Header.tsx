@@ -104,7 +104,11 @@ const Header = () => {
           </Link>
           <Link
             href="#login"
-            className={`text-sm font-medium px-6 py-2.5 border rounded-full transition-all duration-300 ${textColor} ${borderColor} ${hoverBg}`}
+            className={`text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 ${
+              isScrolled
+                ? "bg-black text-white hover:bg-black/80"
+                : "bg-white text-black hover:bg-white/90"
+            }`}
           >
             Login
           </Link>
@@ -169,10 +173,10 @@ const Header = () => {
             </Link>
             <Link
               href="#login"
-              className={`text-lg font-medium px-6 py-3 border rounded-full text-center transition-all ${
+              className={`text-lg font-medium px-6 py-3 rounded-full text-center transition-all ${
                 isScrolled
-                  ? "text-black border-black hover:bg-black hover:text-white"
-                  : "text-white border-white hover:bg-white hover:text-black"
+                  ? "bg-black text-white hover:bg-black/80"
+                  : "bg-white text-black hover:bg-white/90"
               }`}
               onClick={() => setIsMenuOpen(false)}
             >
