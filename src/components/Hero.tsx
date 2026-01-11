@@ -48,7 +48,10 @@ const Hero = () => {
             </h1>
 
             {/* Subheadline */}
-            <p className="mt-6 text-white/80 text-base sm:text-lg md:text-xl max-w-md leading-relaxed">
+            <p
+              className="mt-6 text-base sm:text-lg md:text-xl max-w-md leading-relaxed"
+              style={{ color: "rgba(248, 248, 245, 0.6)" }}
+            >
               Meet the open-air photo booth that captures joy, connection, and
               insights - effortlessly.
             </p>
