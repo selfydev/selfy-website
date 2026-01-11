@@ -1,8 +1,17 @@
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
+
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <h1 className="text-4xl font-bold">Selfy</h1>
-      <p>Open Air Photo Booth Rental - UK</p>
-    </main>
+    <>
+      <Header />
+      <main>
+        <Hero />
+        {/* Placeholder content to test scroll behavior */}
+        <section className="h-screen bg-white flex items-center justify-center">
+          <p className="text-2xl text-gray-400">More content coming soon...</p>
+        </section>
+      </main>
+    </>
   );
 }
