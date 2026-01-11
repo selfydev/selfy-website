@@ -64,9 +64,9 @@ const Hero = () => {
         </div>
 
         {/* Bottom Features Bar */}
-        <div className="pb-8 md:pb-12 animate-fade-in-up animation-delay-300">
+        <div className="pb-5 md:pb-6 animate-fade-in-up animation-delay-300">
           <div
-            className="h-px w-full mb-6 md:mb-8"
+            className="h-px w-full mb-4 md:mb-5"
             style={{ backgroundColor: "rgba(248, 248, 245, 0.15)" }}
             aria-hidden="true"
           />
