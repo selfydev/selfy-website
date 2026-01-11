@@ -27,7 +27,7 @@ const Hero = () => {
         loop
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
-        poster="/videos/hero-poster.jpg"
+        poster="/videos/hero-poster.JPG"
       >
         <source src="/videos/hero.mp4" type="video/mp4" />
       </video>
