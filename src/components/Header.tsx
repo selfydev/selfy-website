@@ -120,7 +120,7 @@ const Header = () => {
           </Link>
           <Link
             href="#login"
-            className={`font-[family-name:var(--font-helvetica-now)] text-[16px] font-bold px-6 py-2.5 rounded-full transition-all duration-300 ${
+            className={`font-[family-name:var(--font-helvetica-now)] text-[16px] font-bold px-8 py-2.5 rounded-full transition-all duration-300 ${
               isScrolled
                 ? "bg-black text-white hover:bg-black/80"
                 : "bg-white text-black hover:bg-white/90"
