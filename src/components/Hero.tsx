@@ -36,7 +36,7 @@ const Hero = () => {
       <div className="absolute inset-0 bg-black/30" aria-hidden="true" />
 
       {/* Content Container */}
-      <div className="relative z-10 h-full flex flex-col justify-between px-6 lg:px-12">
+      <div className="relative z-10 h-full flex flex-col justify-between px-6 lg:px-20">
         {/* Main Content - Centered vertically with offset */}
         <div className="flex-1 flex items-center pt-20">
           <div className="animate-fade-in-up">

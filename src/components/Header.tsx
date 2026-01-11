@@ -68,7 +68,7 @@ const Header = () => {
         isVisible ? "translate-y-0" : "-translate-y-full"
       } ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}
     >
-      <div className="mx-auto flex items-center justify-between px-6 py-3 lg:px-12">
+      <div className="mx-auto flex items-center justify-between px-6 py-3 lg:px-20">
         {/* Logo */}
         <Link
           href="/"
