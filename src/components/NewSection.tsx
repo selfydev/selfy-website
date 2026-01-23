@@ -96,7 +96,7 @@ export default function NewSection() {
     <section
       ref={sectionRef}
       className="w-full py-24"
-      style={{ backgroundColor: "#F5F5F5" }}
+      style={{ backgroundColor: "#FFFFFF" }}
     >
       {/* Header */}
       <div className="text-center mb-16 px-6">
