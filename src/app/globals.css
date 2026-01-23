@@ -45,3 +45,21 @@ h1, h2, h3, h4, h5, h6 {
 .animation-delay-300 {
   animation-delay: 0.3s;
 }
+
+/* Press carousel scroll animation */
+@keyframes press-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(var(--scroll-width));
+  }
+}
+
+.press-scroll {
+  animation: press-scroll 25s linear infinite;
+}
+
+.press-scroll:hover {
+  animation-play-state: paused;
+}

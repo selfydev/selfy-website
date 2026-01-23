@@ -1,5 +1,17 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import Showcase from "@/components/Showcase";
+import VideoSection from "@/components/VideoSection";
+import PressCarousel from "@/components/PressCarousel";
+import TextReveal from "@/components/TextReveal";
+import StackedScrollVideos from "@/components/StackedScrollVideos";
+import FeaturesShowcase from "@/components/FeaturesShowcase";
+import NewSection from "@/components/NewSection";
+import CoverageMap from "@/components/CoverageMap";
+import StoryCarousel from "@/components/StoryCarousel";
+import Pricing from "@/components/Pricing";
+import FinalCTA from "@/components/FinalCTA";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -7,11 +19,19 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        {/* Placeholder content to test scroll behavior */}
-        <section className="h-screen bg-white flex items-center justify-center">
-          <p className="text-2xl text-gray-400">More content coming soon...</p>
-        </section>
+        <Showcase />
+        <VideoSection />
+        <PressCarousel />
+        <TextReveal />
+        <StackedScrollVideos />
+        <FeaturesShowcase />
+        <NewSection />
+        <CoverageMap />
+        <StoryCarousel />
+        <Pricing />
+        <FinalCTA />
       </main>
+      <Footer />
     </>
   );
 }
