@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 import Link from "next/link";
 
 export default function ExhibitionsPage() {
@@ -180,8 +182,9 @@ export default function ExhibitionsPage() {
       <main className="bg-[#F5F5F5]">
         {/* Hero Section */}
         <section className="w-full bg-[#1D1D1D] px-6 lg:px-24 pt-32 pb-20">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <p
+              className="reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "14px",
@@ -195,6 +198,7 @@ export default function ExhibitionsPage() {
               Exhibitions & Trade Shows
             </p>
             <h1
+              className="reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(48px, 8vw, 80px)",
@@ -202,29 +206,34 @@ export default function ExhibitionsPage() {
                 color: "#FFFFFF",
                 lineHeight: 1.1,
                 letterSpacing: "-2px",
-              }}
+                "--reveal-index": 1,
+              } as CSSProperties}
             >
               Stand out on the
               <br />
               show floor.
             </h1>
             <p
-              className="mt-6 max-w-xl"
+              className="mt-6 max-w-xl reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+                "--reveal-index": 2,
+              } as CSSProperties}
             >
               Drive traffic to your stand, capture quality leads, and create
               memorable interactions at trade shows and exhibitions.
             </p>
-            <div className="flex flex-wrap gap-4 mt-10">
+            <div
+              className="flex flex-wrap gap-4 mt-10 reveal-item"
+              style={{ "--reveal-index": 3 } as CSSProperties}
+            >
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
               >
                 Get a quote
@@ -234,21 +243,25 @@ export default function ExhibitionsPage() {
               </Link>
               <a
                 href="#packages"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
               >
                 View packages
               </a>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Stats */}
         <section className="px-6 lg:px-24 py-16 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center">
+                <div
+                  key={index}
+                  className="text-center reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
+                >
                   <p
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -273,15 +286,15 @@ export default function ExhibitionsPage() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Venues */}
         <section className="px-6 lg:px-24 py-16">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <p
-              className="text-center mb-10"
+              className="text-center mb-10 reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "14px",
@@ -297,7 +310,8 @@ export default function ExhibitionsPage() {
               {venues.map((venue, index) => (
                 <div
                   key={index}
-                  className="p-5 rounded-2xl bg-white text-center"
+                  className="p-5 rounded-2xl bg-white text-center reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
                 >
                   <p
                     style={{
@@ -323,14 +337,15 @@ export default function ExhibitionsPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Features */}
         <section className="px-6 lg:px-24 py-24 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="max-w-2xl mb-16">
+            <Reveal className="max-w-2xl mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -344,6 +359,7 @@ export default function ExhibitionsPage() {
                 Features
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 48px)",
@@ -351,17 +367,19 @@ export default function ExhibitionsPage() {
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
                   lineHeight: 1.1,
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Built for exhibition success
               </h2>
-            </div>
+            </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="p-8 rounded-2xl bg-[#F5F5F5]"
+                  className="p-8 rounded-2xl bg-[#F5F5F5] reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
                 >
                   <h3
                     style={{
@@ -387,15 +405,16 @@ export default function ExhibitionsPage() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Industries */}
         <section className="px-6 lg:px-24 py-24">
           <div className="max-w-7xl mx-auto">
-            <div className="max-w-2xl mb-16">
+            <Reveal className="max-w-2xl mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -409,6 +428,7 @@ export default function ExhibitionsPage() {
                 Industries
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 48px)",
@@ -416,17 +436,19 @@ export default function ExhibitionsPage() {
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
                   lineHeight: 1.1,
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Expertise across sectors
               </h2>
-            </div>
+            </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {industries.map((industry, index) => (
                 <div
                   key={index}
-                  className="p-8 rounded-2xl bg-white"
+                  className="p-8 rounded-2xl bg-white reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
                 >
                   <h3
                     style={{
@@ -452,15 +474,16 @@ export default function ExhibitionsPage() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Packages */}
         <section id="packages" className="px-6 lg:px-24 py-24 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <Reveal className="text-center mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -474,6 +497,7 @@ export default function ExhibitionsPage() {
                 Packages
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 48px)",
@@ -481,21 +505,23 @@ export default function ExhibitionsPage() {
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
                   lineHeight: 1.1,
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Flexible pricing for any show
               </h2>
-            </div>
+            </Reveal>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <Reveal className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {packages.map((pkg, index) => (
                 <div
                   key={index}
-                  className={`relative p-8 rounded-2xl ${
+                  className={`relative p-8 rounded-2xl reveal-item ${
                     pkg.popular
                       ? "bg-[#1D1D1D] text-white"
                       : "bg-[#F5F5F5]"
                   }`}
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
                 >
                   {pkg.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-white text-[#1D1D1D]">
@@ -587,7 +613,7 @@ export default function ExhibitionsPage() {
                   </ul>
                   <Link
                     href="/contact"
-                    className={`block w-full py-4 rounded-full text-center font-medium hover:opacity-90 transition-opacity ${
+                    className={`block w-full py-4 rounded-full text-center font-medium hover:opacity-90 press-scale ${
                       pkg.popular
                         ? "bg-white text-[#1D1D1D]"
                         : "bg-[#1D1D1D] text-white"
@@ -601,15 +627,16 @@ export default function ExhibitionsPage() {
                   </Link>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Testimonials */}
         <section className="px-6 lg:px-24 py-24">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <Reveal className="text-center mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -623,23 +650,26 @@ export default function ExhibitionsPage() {
                 Testimonials
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 48px)",
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 What exhibitors say
               </h2>
-            </div>
+            </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {testimonials.map((testimonial, index) => (
                 <div
                   key={index}
-                  className="p-8 rounded-2xl bg-white"
+                  className="p-8 rounded-2xl bg-white reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
                 >
                   <p
                     className="mb-6"
@@ -651,7 +681,7 @@ export default function ExhibitionsPage() {
                       lineHeight: 1.6,
                     }}
                   >
-                    "{testimonial.quote}"
+                    &quot;{testimonial.quote}&quot;
                   </p>
                   <div>
                     <p
@@ -678,15 +708,16 @@ export default function ExhibitionsPage() {
                   </div>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* FAQ */}
         <section className="px-6 lg:px-24 py-24 bg-white">
           <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-16">
+            <Reveal className="text-center mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -700,27 +731,30 @@ export default function ExhibitionsPage() {
                 FAQ
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 48px)",
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Common questions
               </h2>
-            </div>
+            </Reveal>
 
-            <div className="space-y-4">
+            <Reveal className="space-y-4">
               {faqs.map((faq, index) => (
                 <div
                   key={index}
-                  className="rounded-2xl bg-[#F5F5F5] overflow-hidden"
+                  className="rounded-2xl bg-[#F5F5F5] overflow-hidden reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
                 >
                   <button
                     onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                    className="w-full p-6 flex items-center justify-between text-left"
+                    className="w-full p-6 flex items-center justify-between text-left press-scale"
                   >
                     <span
                       style={{
@@ -747,7 +781,7 @@ export default function ExhibitionsPage() {
                     </svg>
                   </button>
                   <div
-                    className={`overflow-hidden transition-all duration-300 ${
+                    className={`overflow-hidden transition-[max-height] duration-300 ${
                       openFaq === index ? "max-h-96" : "max-h-0"
                     }`}
                   >
@@ -766,14 +800,15 @@ export default function ExhibitionsPage() {
                   </div>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* CTA */}
         <section className="px-6 lg:px-24 py-24 bg-[#1D1D1D]">
-          <div className="max-w-3xl mx-auto text-center">
+          <Reveal className="max-w-3xl mx-auto text-center">
             <h2
+              className="reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(36px, 5vw, 56px)",
@@ -787,22 +822,26 @@ export default function ExhibitionsPage() {
               Got an exhibition coming up?
             </h2>
             <p
-              className="max-w-xl mx-auto mb-10"
+              className="max-w-xl mx-auto mb-10 reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+                "--reveal-index": 1,
+              } as CSSProperties}
             >
-              Let's discuss how we can help you maximise your presence on the show floor
+              Let&apos;s discuss how we can help you maximise your presence on the show floor
               and capture more qualified leads than ever before.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div
+              className="flex flex-wrap justify-center gap-4 reveal-item"
+              style={{ "--reveal-index": 2 } as CSSProperties}
+            >
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
               >
                 Get a quote
@@ -811,14 +850,14 @@ export default function ExhibitionsPage() {
                 </svg>
               </Link>
               <a
-                href="mailto:exhibitions@selfy.co.uk"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors"
+                href="mailto:hello@selfy.photo"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
               >
-                exhibitions@selfy.co.uk
+                hello@selfy.photo
               </a>
             </div>
-          </div>
+          </Reveal>
         </section>
       </main>
       <Footer />

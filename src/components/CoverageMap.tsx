@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
+import Link from "next/link";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
+// Free, token-less vector tiles (OpenStreetMap data via OpenFreeMap)
+const MAP_STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
 
 // Location data for markers
 const locations = [
@@ -55,11 +57,11 @@ function useCountUp(target: number, duration: number = 2000, start: boolean = fa
 
 export default function CoverageMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
+  const map = useRef<maplibregl.Map | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
-  const markersRef = useRef<mapboxgl.Marker[]>([]);
+  const markersRef = useRef<maplibregl.Marker[]>([]);
 
   // Animated counters
   const eventsCount = useCountUp(stats[0].value, 2000, isVisible);
@@ -88,15 +90,15 @@ export default function CoverageMap() {
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
 
-    map.current = new mapboxgl.Map({
+    map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/light-v11",
+      style: MAP_STYLE_URL,
       center: [-0.1276, 51.5074],
       zoom: 6,
       pitch: 0,
       bearing: 0,
       interactive: false,
-      attributionControl: false,
+      attributionControl: { compact: true },
     });
 
     // Add coverage radius rings after map loads
@@ -225,7 +227,7 @@ export default function CoverageMap() {
       el.addEventListener("mouseenter", () => setActiveTooltip(location.name));
       el.addEventListener("mouseleave", () => setActiveTooltip(null));
 
-      const marker = new mapboxgl.Marker(el)
+      const marker = new maplibregl.Marker({ element: el })
         .setLngLat(location.coords)
         .addTo(map.current!);
 
@@ -269,7 +271,7 @@ export default function CoverageMap() {
       {locations.map((location) => (
         <div
           key={location.name}
-          className={`absolute z-20 pointer-events-none transition-all duration-200 ${
+          className={`absolute z-20 pointer-events-none transition-[opacity,transform] duration-200 ${
             activeTooltip === location.name ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
           }`}
           style={{
@@ -356,8 +358,9 @@ export default function CoverageMap() {
           ))}
         </div>
 
-        <button
-          className="px-6 py-3 rounded-full text-sm font-medium transition-opacity hover:opacity-80"
+        <Link
+          href="/contact"
+          className="inline-block px-6 py-3 rounded-full text-sm font-medium transition-opacity hover:opacity-80"
           style={{
             fontFamily: "var(--font-helvetica-now)",
             backgroundColor: "#FFFFFF",
@@ -365,7 +368,7 @@ export default function CoverageMap() {
           }}
         >
           Get in touch
-        </button>
+        </Link>
       </div>
     </section>
   );

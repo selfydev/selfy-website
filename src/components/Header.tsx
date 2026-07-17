@@ -1,49 +1,58 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 const navLinks = [
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#about", label: "About" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#blog", label: "Blog" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/about", label: "About" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
 ];
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const lastScrollYRef = useRef<number>(0);
 
   useEffect(() => {
-    const handleScroll = () => {
+    let rafId: number | null = null;
+
+    const update = () => {
+      rafId = null;
       const currentScrollY = window.scrollY;
+      const lastScrollY = lastScrollYRef.current;
+      lastScrollYRef.current = currentScrollY;
 
-      // Check if at top of page
-      if (currentScrollY < 50) {
-        setIsAtTop(true);
-        setIsVisible(true);
-      } else {
-        setIsAtTop(false);
+      const nextIsAtTop = currentScrollY < 50;
+      const nextIsVisible = nextIsAtTop || currentScrollY <= lastScrollY;
 
-        // Hide on scroll down, show on scroll up
-        if (currentScrollY > lastScrollY) {
-          setIsVisible(false);
-          setIsMenuOpen(false);
-        } else {
-          setIsVisible(true);
-        }
+      // Functional setState so we only trigger a render when the value changes
+      setIsAtTop((prev) => (prev === nextIsAtTop ? prev : nextIsAtTop));
+      setIsVisible((prev) => (prev === nextIsVisible ? prev : nextIsVisible));
+      if (!nextIsVisible) {
+        setIsMenuOpen((prev) => (prev ? false : prev));
       }
+    };
 
-      setLastScrollY(currentScrollY);
+    const handleScroll = () => {
+      // Throttle with a single in-flight animation frame
+      if (rafId === null) {
+        rafId = window.requestAnimationFrame(update);
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId);
+      }
+    };
+  }, []);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -59,13 +68,11 @@ const Header = () => {
   // Dynamic styles based on scroll state
   const isScrolled = !isAtTop && isVisible;
   const textColor = isScrolled ? "text-black" : "text-white";
-  const borderColor = isScrolled ? "border-black" : "border-white";
-  const hoverBg = isScrolled ? "hover:bg-black hover:text-white" : "hover:bg-white hover:text-black";
   const hamburgerBg = isScrolled ? "bg-black" : "bg-white";
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-[transform,background-color,box-shadow] duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       } ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}
     >
@@ -113,14 +120,16 @@ const Header = () => {
         {/* Desktop Auth Buttons */}
         <div className="hidden lg:flex items-center gap-4">
           <Link
-            href="#signup"
+            href="https://app.selfy.photo/signup"
+            aria-label="Sign up for a Selfy account"
             className={`font-[family-name:var(--font-helvetica-now)] text-[16px] font-medium hover:opacity-70 transition-opacity duration-300 ${textColor}`}
           >
             Sign up
           </Link>
           <Link
-            href="#login"
-            className={`font-[family-name:var(--font-helvetica-now)] text-[16px] font-bold px-12 py-2.5 rounded-full transition-all duration-300 ${
+            href="https://app.selfy.photo/login"
+            aria-label="Login to your Selfy account"
+            className={`press-scale font-[family-name:var(--font-helvetica-now)] text-[16px] font-bold px-12 py-2.5 rounded-full ${
               isScrolled
                 ? "bg-black text-white hover:bg-black/80"
                 : "bg-white text-black hover:bg-white/90"
@@ -141,17 +150,17 @@ const Header = () => {
           tabIndex={0}
         >
           <span
-            className={`block w-6 h-0.5 transition-all duration-300 ${hamburgerBg} ${
+            className={`block w-6 h-0.5 transition-[transform,opacity,background-color] duration-300 ${hamburgerBg} ${
               isMenuOpen ? "rotate-45 translate-y-2" : ""
             }`}
           />
           <span
-            className={`block w-6 h-0.5 transition-all duration-300 ${hamburgerBg} ${
+            className={`block w-6 h-0.5 transition-[transform,opacity,background-color] duration-300 ${hamburgerBg} ${
               isMenuOpen ? "opacity-0" : ""
             }`}
           />
           <span
-            className={`block w-6 h-0.5 transition-all duration-300 ${hamburgerBg} ${
+            className={`block w-6 h-0.5 transition-[transform,opacity,background-color] duration-300 ${hamburgerBg} ${
               isMenuOpen ? "-rotate-45 -translate-y-2" : ""
             }`}
           />
@@ -160,7 +169,7 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden absolute top-full left-0 right-0 backdrop-blur-md transition-all duration-300 overflow-hidden ${
+        className={`lg:hidden absolute top-full left-0 right-0 backdrop-blur-md transition-[max-height,opacity] duration-300 overflow-hidden ${
           isScrolled ? "bg-white/95" : "bg-black/95"
         } ${isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"}`}
       >
@@ -179,7 +188,8 @@ const Header = () => {
           ))}
           <div className="flex flex-col gap-3 mt-6">
             <Link
-              href="#signup"
+              href="https://app.selfy.photo/signup"
+              aria-label="Sign up for a Selfy account"
               className={`text-lg hover:opacity-80 transition-opacity ${
                 isScrolled ? "text-black" : "text-white"
               }`}
@@ -188,8 +198,9 @@ const Header = () => {
               Sign up
             </Link>
             <Link
-              href="#login"
-              className={`text-lg font-medium px-6 py-3 rounded-full text-center transition-all ${
+              href="https://app.selfy.photo/login"
+              aria-label="Login to your Selfy account"
+              className={`press-scale text-lg font-medium px-6 py-3 rounded-full text-center ${
                 isScrolled
                   ? "bg-black text-white hover:bg-black/80"
                   : "bg-white text-black hover:bg-white/90"

@@ -2,8 +2,10 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 import Link from "next/link";
 import { useState } from "react";
+import type { CSSProperties } from "react";
 
 export default function WeddingsPage() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
@@ -139,8 +141,9 @@ export default function WeddingsPage() {
       <main className="bg-[#F5F5F5]">
         {/* Hero */}
         <section className="w-full bg-[#1D1D1D] px-6 lg:px-24 pt-32 pb-20">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <p
+              className="reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "14px",
@@ -154,6 +157,7 @@ export default function WeddingsPage() {
               Weddings
             </p>
             <h1
+              className="reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(48px, 8vw, 80px)",
@@ -161,28 +165,33 @@ export default function WeddingsPage() {
                 color: "#FFFFFF",
                 lineHeight: 1.1,
                 letterSpacing: "-2px",
-              }}
+                "--reveal-index": 1,
+              } as CSSProperties}
             >
               Your wedding,
               <br />
               beautifully captured.
             </h1>
             <p
-              className="mt-6 max-w-xl"
+              className="mt-6 max-w-xl reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+                "--reveal-index": 2,
+              } as CSSProperties}
             >
               Premium photo booth experiences that capture the joy, laughter, and love of your special day.
             </p>
-            <div className="flex flex-wrap gap-4 mt-10">
+            <div
+              className="flex flex-wrap gap-4 mt-10 reveal-item"
+              style={{ "--reveal-index": 3 } as CSSProperties}
+            >
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "16px" }}
               >
                 Check availability
@@ -192,21 +201,25 @@ export default function WeddingsPage() {
               </Link>
               <a
                 href="#packages"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 transition-colors"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "16px" }}
               >
                 View packages
               </a>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Stats */}
         <section className="px-6 lg:px-24 py-16 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            <Reveal className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center">
+                <div
+                  key={index}
+                  className="text-center reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
+                >
                   <p
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -231,28 +244,29 @@ export default function WeddingsPage() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Featured Image */}
         <section className="px-6 lg:px-24 py-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="aspect-[21/9] rounded-2xl bg-[#E5E5E5] overflow-hidden flex items-center justify-center">
+          <Reveal className="max-w-7xl mx-auto">
+            <div className="aspect-[21/9] rounded-2xl bg-[#E5E5E5] overflow-hidden flex items-center justify-center img-outline reveal-item">
               <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#CCCCCC" strokeWidth="1">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                 <circle cx="8.5" cy="8.5" r="1.5" />
                 <polyline points="21 15 16 10 5 21" />
               </svg>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* How it works */}
         <section className="px-6 lg:px-24 py-24">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-16">
+            <Reveal className="mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -266,20 +280,26 @@ export default function WeddingsPage() {
                 How it works
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 56px)",
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Four simple steps
               </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            </Reveal>
+            <Reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {process.map((item, index) => (
-                <div key={index} className="bg-white rounded-2xl p-8">
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl p-8 reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
+                >
                   <span
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -316,15 +336,15 @@ export default function WeddingsPage() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Gallery Preview */}
         <section className="px-6 lg:px-24 py-24 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-end justify-between mb-12">
-              <div>
+            <Reveal className="flex items-end justify-between mb-12">
+              <div className="reveal-item">
                 <p
                   style={{
                     fontFamily: "var(--font-helvetica-now)",
@@ -352,25 +372,27 @@ export default function WeddingsPage() {
               </div>
               <Link
                 href="/work"
-                className="hidden md:inline-flex items-center gap-2 hover:opacity-70 transition-opacity"
+                className="hidden md:inline-flex items-center gap-2 hover:opacity-70 press-scale reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "15px",
                   fontWeight: 500,
                   color: "#1D1D1D",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 View all work
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M7 17L17 7M17 7H7M17 7V17" />
                 </svg>
               </Link>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
+            </Reveal>
+            <Reveal className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {[1, 2, 3, 4, 5, 6].map((item, index) => (
                 <div
                   key={item}
-                  className="aspect-[4/3] rounded-xl bg-[#E5E5E5] flex items-center justify-center"
+                  className="aspect-[4/3] rounded-xl bg-[#E5E5E5] flex items-center justify-center img-outline reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
                 >
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#CCCCCC" strokeWidth="1">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
@@ -379,15 +401,16 @@ export default function WeddingsPage() {
                   </svg>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Testimonials */}
         <section className="px-6 lg:px-24 py-24">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-12">
+            <Reveal className="mb-12">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -401,20 +424,26 @@ export default function WeddingsPage() {
                 Testimonials
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 56px)",
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Loved by couples
               </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            </Reveal>
+            <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {testimonials.map((testimonial, index) => (
-                <div key={index} className="bg-white rounded-2xl p-8">
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl p-8 reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
+                >
                   <div className="flex gap-1 mb-6">
                     {[...Array(5)].map((_, i) => (
                       <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="#1D1D1D">
@@ -432,7 +461,7 @@ export default function WeddingsPage() {
                       marginBottom: "24px",
                     }}
                   >
-                    "{testimonial.quote}"
+                    &quot;{testimonial.quote}&quot;
                   </p>
                   <p
                     style={{
@@ -456,15 +485,16 @@ export default function WeddingsPage() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Packages */}
         <section id="packages" className="px-6 lg:px-24 py-24 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+            <Reveal className="text-center mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -478,36 +508,40 @@ export default function WeddingsPage() {
                 Packages
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 56px)",
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Choose your package
               </h2>
               <p
-                className="mt-4 max-w-xl mx-auto"
+                className="mt-4 max-w-xl mx-auto reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "16px",
                   fontWeight: 400,
                   color: "#888888",
-                }}
+                  "--reveal-index": 2,
+                } as CSSProperties}
               >
                 All packages include setup, breakdown, and travel within Greater London.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {packages.map((pkg, index) => (
                 <div
                   key={index}
-                  className={`relative rounded-2xl p-8 ${
+                  className={`relative rounded-2xl p-8 reveal-item ${
                     pkg.popular ? "bg-[#1D1D1D]" : "bg-[#F5F5F5]"
                   }`}
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
                 >
                   {pkg.popular && (
                     <div
@@ -583,7 +617,7 @@ export default function WeddingsPage() {
                   </ul>
                   <Link
                     href="/contact"
-                    className={`block w-full py-4 rounded-full text-center font-medium transition-opacity hover:opacity-90 ${
+                    className={`block w-full py-4 rounded-full text-center font-medium press-scale hover:opacity-90 ${
                       pkg.popular ? "bg-white text-[#1D1D1D]" : "bg-[#1D1D1D] text-white"
                     }`}
                     style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
@@ -592,15 +626,16 @@ export default function WeddingsPage() {
                   </Link>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* FAQ */}
         <section className="px-6 lg:px-24 py-24">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
+            <Reveal className="text-center mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -614,24 +649,30 @@ export default function WeddingsPage() {
                 FAQ
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 56px)",
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Common questions
               </h2>
-            </div>
+            </Reveal>
 
-            <div className="space-y-4">
+            <Reveal className="space-y-4">
               {faqs.map((faq, index) => (
-                <div key={index} className="rounded-2xl bg-white overflow-hidden">
+                <div
+                  key={index}
+                  className="rounded-2xl bg-white overflow-hidden reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
+                >
                   <button
                     onClick={() => setActiveFaq(activeFaq === index ? null : index)}
-                    className="w-full flex items-center justify-between p-6 text-left"
+                    className="w-full flex items-center justify-between p-6 text-left press-scale"
                   >
                     <span
                       style={{
@@ -658,7 +699,7 @@ export default function WeddingsPage() {
                     </svg>
                   </button>
                   <div
-                    className={`transition-all duration-300 overflow-hidden ${
+                    className={`transition-[max-height] duration-300 overflow-hidden ${
                       activeFaq === index ? "max-h-96" : "max-h-0"
                     }`}
                   >
@@ -677,14 +718,15 @@ export default function WeddingsPage() {
                   </div>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* CTA */}
         <section className="px-6 lg:px-24 py-24 bg-[#1D1D1D]">
-          <div className="max-w-3xl mx-auto text-center">
+          <Reveal className="max-w-3xl mx-auto text-center">
             <h2
+              className="reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(36px, 5vw, 56px)",
@@ -698,21 +740,25 @@ export default function WeddingsPage() {
               Ready to make your wedding unforgettable?
             </h2>
             <p
-              className="mb-10"
+              className="mb-10 reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+                "--reveal-index": 1,
+              } as CSSProperties}
             >
-              Check availability for your date and let's start planning.
+              Check availability for your date and let&apos;s start planning.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div
+              className="flex flex-wrap justify-center gap-4 reveal-item"
+              style={{ "--reveal-index": 2 } as CSSProperties}
+            >
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "16px" }}
               >
                 Check availability
@@ -721,14 +767,14 @@ export default function WeddingsPage() {
                 </svg>
               </Link>
               <a
-                href="mailto:weddings@selfy.co.uk"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 transition-colors"
+                href="mailto:hello@selfy.photo"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "16px" }}
               >
-                weddings@selfy.co.uk
+                hello@selfy.photo
               </a>
             </div>
-          </div>
+          </Reveal>
         </section>
       </main>
       <Footer />

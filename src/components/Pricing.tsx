@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import Reveal from "@/components/Reveal";
 
 // Animated price counter hook
 function useAnimatedPrice(targetPrice: number, duration: number = 500) {
@@ -166,35 +168,41 @@ export default function Pricing() {
   const tiers = isCorporate ? corporateTiers : eventTiers;
 
   return (
-    <section className="relative w-full min-h-screen bg-[#F5F5F5] py-24 px-6 lg:px-24">
+    <section id="pricing" className="relative w-full min-h-screen bg-[#F5F5F5] py-24 px-6 lg:px-24">
       {/* Header */}
-      <div className="text-center mb-16">
+      <Reveal className="text-center mb-16">
         <h2
+          className="reveal-item"
           style={{
             fontFamily: "var(--font-helvetica-now)",
             fontSize: "72px",
             fontWeight: 500,
             color: "#1D1D1D",
             lineHeight: 1.1,
-          }}
+            "--reveal-index": 0,
+          } as React.CSSProperties}
         >
           Simple pricing
         </h2>
         <p
-          className="mt-4 max-w-xl mx-auto"
+          className="mt-4 max-w-xl mx-auto reveal-item"
           style={{
             fontFamily: "var(--font-helvetica-now)",
             fontSize: "20px",
             fontWeight: 400,
             color: "#888888",
             lineHeight: 1.5,
-          }}
+            "--reveal-index": 1,
+          } as React.CSSProperties}
         >
           Transparent pricing for every occasion. No hidden fees.
         </p>
 
         {/* Toggle */}
-        <div className="mt-10 flex items-center justify-center gap-4">
+        <div
+          className="mt-10 flex items-center justify-center gap-4 reveal-item"
+          style={{ "--reveal-index": 2 } as React.CSSProperties}
+        >
           <span
             style={{
               fontFamily: "var(--font-helvetica-now)",
@@ -208,7 +216,9 @@ export default function Pricing() {
           </span>
           <button
             onClick={() => setIsCorporate(!isCorporate)}
-            className="relative w-16 h-8 rounded-full transition-colors duration-300"
+            aria-label="Toggle between events and corporate pricing"
+            aria-pressed={isCorporate}
+            className="relative w-16 h-8 rounded-full press-scale"
             style={{
               backgroundColor: isCorporate ? "#1D1D1D" : "rgba(29, 29, 29, 0.2)",
             }}
@@ -232,11 +242,11 @@ export default function Pricing() {
             Corporate
           </span>
         </div>
-      </div>
+      </Reveal>
 
       {/* Pricing Cards */}
-      <div
-        className={`max-w-6xl mx-auto grid grid-cols-1 gap-6 transition-all duration-500 ${
+      <Reveal
+        className={`max-w-6xl mx-auto grid grid-cols-1 gap-6 transition-[grid-template-columns,max-width] duration-500 ${
           isCorporate ? "md:grid-cols-2 md:max-w-4xl" : "md:grid-cols-3"
         }`}
       >
@@ -244,11 +254,12 @@ export default function Pricing() {
           return (
             <div
               key={tier.name}
-              className="relative rounded-2xl p-8 transition-all duration-300"
+              className="relative rounded-2xl p-8 reveal-item"
               style={{
                 backgroundColor: tier.highlighted ? "#1D1D1D" : "#FFFFFF",
-                transform: tier.highlighted ? "scale(1.02)" : "scale(1)",
-              }}
+                scale: tier.highlighted ? "1.02" : "1",
+                "--reveal-index": Math.min(index, 5),
+              } as React.CSSProperties}
             >
               {/* Popular badge */}
               {tier.highlighted && (
@@ -347,8 +358,9 @@ export default function Pricing() {
               </ul>
 
               {/* CTA Button */}
-              <button
-                className="w-full py-4 rounded-full text-sm font-medium transition-opacity hover:opacity-80"
+              <Link
+                href="/contact"
+                className="block w-full py-4 rounded-full text-sm font-medium text-center press-scale hover:opacity-80"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   backgroundColor: tier.highlighted ? "#FFFFFF" : "#1D1D1D",
@@ -356,15 +368,16 @@ export default function Pricing() {
                 }}
               >
                 {tier.cta}
-              </button>
+              </Link>
             </div>
           );
         })}
-      </div>
+      </Reveal>
 
       {/* Bottom note */}
+      <Reveal>
       <p
-        className="text-center mt-12"
+        className="text-center mt-12 reveal-item"
         style={{
           fontFamily: "var(--font-helvetica-now)",
           fontSize: "14px",
@@ -375,14 +388,15 @@ export default function Pricing() {
         All packages include setup, breakdown, and travel within Greater London.
         <br />
         Need something custom?{" "}
-        <a
-          href="#"
+        <Link
+          href="/contact"
           className="underline hover:opacity-70 transition-opacity"
           style={{ color: "#1D1D1D" }}
         >
           Get in touch
-        </a>
+        </Link>
       </p>
+      </Reveal>
     </section>
   );
 }

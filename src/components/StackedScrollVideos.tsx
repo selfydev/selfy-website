@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -82,6 +83,7 @@ export default function StackedScrollVideos() {
               muted
               loop
               playsInline
+              aria-hidden="true"
               className="w-full h-full object-cover"
             >
               <source src="/videos/SalsaMarketingVideo20.mp4" type="video/mp4" />
@@ -144,12 +146,12 @@ export default function StackedScrollVideos() {
                 </div>
 
                 <p className="text-white/70 text-lg leading-relaxed mb-8 max-w-xl mx-auto">
-                  Selfy's intelligent open-air design adapts to every space and every guest, capturing authentic reactions in real time. No friction. No disruption. Just moments as they happen.
+                  Selfy&apos;s intelligent open-air design adapts to every space and every guest, capturing authentic reactions in real time. No friction. No disruption. Just moments as they happen.
                 </p>
 
-                <button className="bg-white text-[#1D1D1D] px-8 py-4 rounded-full font-medium text-lg hover:bg-white/90 transition-colors">
-                  Book a free test ride
-                </button>
+                <Link href="/contact" className="press-scale inline-block bg-white text-[#1D1D1D] px-8 py-4 rounded-full font-medium text-lg hover:bg-white/90">
+                  Book your event
+                </Link>
               </div>
             </div>
           </div>

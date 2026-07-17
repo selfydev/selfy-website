@@ -11,7 +11,7 @@ const TextReveal = () => {
   const textRef = useRef<HTMLHeadingElement>(null);
   const [revealedChars, setRevealedChars] = useState(0);
   const targetCharsRef = useRef(0);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const handleScroll = () => {

@@ -2,7 +2,9 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 import { useState } from "react";
+import { submitForm, type FormStatus } from "@/lib/forms";
 
 const categories = ["All", "Weddings", "Corporate", "Industry", "Guides"];
 
@@ -62,17 +64,22 @@ const posts = [
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [email, setEmail] = useState("");
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
 
   const filteredPosts = activeCategory === "All"
     ? posts
     : posts.filter(post => post.category === activeCategory);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email) {
-      setIsSubscribed(true);
+    if (!email) return;
+    setStatus("submitting");
+    const ok = await submitForm(e.currentTarget);
+    if (ok) {
+      setStatus("success");
       setEmail("");
+    } else {
+      setStatus("error");
     }
   };
 
@@ -82,9 +89,11 @@ export default function BlogPage() {
       <main className="bg-[#F5F5F5]">
         {/* Hero */}
         <section className="w-full bg-[#1D1D1D] px-6 lg:px-24 pt-32 pb-20">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <p
+              className="reveal-item"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "14px",
                 fontWeight: 500,
@@ -92,29 +101,35 @@ export default function BlogPage() {
                 letterSpacing: "2px",
                 textTransform: "uppercase",
                 marginBottom: "24px",
-              }}
+              } as React.CSSProperties}
             >
               Blog
             </p>
             <h1
+              className="reveal-item"
               style={{
+                "--reveal-index": 1,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(48px, 8vw, 80px)",
                 fontWeight: 500,
                 color: "#FFFFFF",
                 lineHeight: 1.1,
                 letterSpacing: "-2px",
-              }}
+              } as React.CSSProperties}
             >
               Insights & Stories
             </h1>
-          </div>
+          </Reveal>
         </section>
 
         {/* Featured Post */}
         <section className="px-6 lg:px-24 py-16">
-          <div className="max-w-7xl mx-auto">
-            <a href="#" className="group block bg-white rounded-2xl overflow-hidden">
+          <Reveal className="max-w-7xl mx-auto">
+            <a
+              href="#"
+              className="reveal-item group block bg-white rounded-2xl overflow-hidden"
+              style={{ "--reveal-index": 0 } as React.CSSProperties}
+            >
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 {/* Image */}
                 <div className="aspect-[4/3] lg:aspect-auto bg-[#E5E5E5] relative overflow-hidden">
@@ -195,7 +210,7 @@ export default function BlogPage() {
                 </div>
               </div>
             </a>
-          </div>
+          </Reveal>
         </section>
 
         {/* Category Filter */}
@@ -206,7 +221,7 @@ export default function BlogPage() {
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`px-5 py-2 rounded-full whitespace-nowrap transition-all ${
+                  className={`press-scale px-5 py-2 rounded-full whitespace-nowrap ${
                     activeCategory === category
                       ? "bg-[#1D1D1D] text-white"
                       : "bg-white text-[#888888] hover:text-[#1D1D1D]"
@@ -227,12 +242,13 @@ export default function BlogPage() {
         {/* Posts Grid */}
         <section className="px-6 lg:px-24 pb-24">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredPosts.map((post, index) => (
                 <a
                   key={index}
                   href="#"
-                  className="group bg-white rounded-2xl overflow-hidden"
+                  className="reveal-item group bg-white rounded-2xl overflow-hidden"
+                  style={{ "--reveal-index": Math.min(index, 5) } as React.CSSProperties}
                 >
                   {/* Image */}
                   <div className="aspect-[16/10] bg-[#E5E5E5] relative overflow-hidden">
@@ -306,56 +322,80 @@ export default function BlogPage() {
                   </div>
                 </a>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Newsletter */}
         <section className="px-6 lg:px-24 py-24 bg-[#1D1D1D]">
-          <div className="max-w-2xl mx-auto text-center">
+          <Reveal className="max-w-2xl mx-auto text-center">
             <h2
+              className="reveal-item"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(36px, 5vw, 56px)",
                 fontWeight: 500,
                 color: "#FFFFFF",
                 lineHeight: 1.1,
                 marginBottom: "16px",
-              }}
+              } as React.CSSProperties}
             >
               Stay in the loop
             </h2>
             <p
-              className="mb-10"
+              className="reveal-item mb-10"
               style={{
+                "--reveal-index": 1,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+              } as React.CSSProperties}
             >
               Subscribe for event tips, industry insights, and exclusive updates.
             </p>
-            {!isSubscribed ? (
+            {status !== "success" ? (
+              <>
               <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+                <input type="hidden" name="form" value="newsletter" />
                 <input
                   type="email"
+                  name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
+                  aria-label="Email address"
                   className="flex-1 px-5 py-3.5 rounded-full bg-white/10 border border-white/10 text-white placeholder:text-white/40 outline-none focus:border-white/30 transition-colors"
                   style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "14px" }}
                   required
                 />
                 <button
                   type="submit"
-                  className="px-6 py-3.5 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 transition-opacity"
+                  disabled={status === "submitting"}
+                  className={`press-scale px-6 py-3.5 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 ${
+                    status === "submitting" ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "14px" }}
                 >
-                  Subscribe
+                  {status === "submitting" ? "Sending…" : "Subscribe"}
                 </button>
               </form>
+              {status === "error" && (
+                <p
+                  className="mt-4"
+                  style={{
+                    fontFamily: "var(--font-helvetica-now)",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    color: "#FCA5A5",
+                  }}
+                >
+                  Something went wrong — please email us instead.
+                </p>
+              )}
+              </>
             ) : (
               <p
                 style={{
@@ -368,7 +408,7 @@ export default function BlogPage() {
                 Thanks for subscribing!
               </p>
             )}
-          </div>
+          </Reveal>
         </section>
       </main>
       <Footer />

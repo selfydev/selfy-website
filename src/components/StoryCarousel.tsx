@@ -44,7 +44,9 @@ const slides: Slide[] = [
 export default function StoryCarousel() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [progress, setProgress] = useState(0); // 0-1 progress within current slide
+  // 0-1 progress within current slide; the live value is read from
+  // progressRef by the rAF loop, so only the setter is needed here.
+  const [, setProgress] = useState(0);
   const [displayProgress, setDisplayProgress] = useState(0); // Smoothed progress for display
 
   // Refs for synchronous state in wheel handler
@@ -55,12 +57,16 @@ export default function StoryCarousel() {
   const scrollAccumulator = useRef(0);
   const animationRef = useRef<number | null>(null);
 
-  // Smooth animation loop for progress bar
+  // Smooth animation loop for progress bar. Runs once; reads the live
+  // target from progressRef, which is mutated wherever setProgress is called.
   useEffect(() => {
     const animate = () => {
       setDisplayProgress((current) => {
-        const target = progress;
+        const target = progressRef.current;
         const diff = target - current;
+
+        // If progress jumps significantly (slide transition), snap
+        if (Math.abs(diff) > 0.5) return target;
 
         // Lerp with easing
         if (Math.abs(diff) < 0.001) return target;
@@ -73,21 +79,12 @@ export default function StoryCarousel() {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [progress]);
+  }, []);
 
   // Keep refs in sync
   useEffect(() => {
     activeIndexRef.current = activeIndex;
   }, [activeIndex]);
-
-  // When progress resets (slide change), immediately sync displayProgress
-  useEffect(() => {
-    progressRef.current = progress;
-    // If progress jumps significantly (slide transition), snap displayProgress
-    if (Math.abs(progress - displayProgress) > 0.5) {
-      setDisplayProgress(progress);
-    }
-  }, [progress]);
 
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {

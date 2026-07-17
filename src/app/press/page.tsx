@@ -1,41 +1,35 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Link from "next/link";
+import Reveal from "@/components/Reveal";
+
+export const metadata: Metadata = {
+  title: "Press & Media Resources",
+  description:
+    "Press and media resources for Selfy, the premium open-air photo booth rental company. Find company information, contacts and coverage in one place.",
+  alternates: {
+    canonical: "/press",
+  },
+  openGraph: {
+    title: "Press & Media Resources",
+    description:
+      "Press and media resources for Selfy, the premium open-air photo booth rental company. Find company information, contacts and coverage in one place.",
+  },
+};
 
 export default function PressPage() {
-  const pressFeatures = [
-    {
-      publication: "Mashable",
-      title: "How Selfy is Revolutionising Event Photography",
-      date: "March 2024",
-    },
-    {
-      publication: "TechCrunch",
-      title: "Photo Booth Startup Selfy Raises Series A",
-      date: "January 2024",
-    },
-    {
-      publication: "Wallpaper*",
-      title: "The Design-Forward Photo Booth Taking Events by Storm",
-      date: "November 2023",
-    },
-    {
-      publication: "The Verge",
-      title: "Selfy Brings AI-Powered Photo Enhancement to Events",
-      date: "September 2023",
-    },
-    {
-      publication: "Forbes",
-      title: "30 Under 30: Meet the Founders of Selfy",
-      date: "July 2023",
-    },
+  const stats = [
+    { value: "500+", label: "Events delivered", detail: "Weddings, brand activations, and corporate events across the UK" },
+    { value: "2M+", label: "Photos captured", detail: "Shared instantly through our digital galleries" },
+    { value: "98%", label: "Client satisfaction", detail: "Based on post-event client feedback" },
+    { value: "50+", label: "UK cities", detail: "Nationwide coverage from our London hub" },
   ];
 
-  const awards = [
-    { name: "Red Dot Design Award", year: "2024" },
-    { name: "Event Technology Award", year: "2024" },
-    { name: "UK Business Awards Finalist", year: "2023" },
-    { name: "Best Event Supplier", year: "2023" },
+  const storyAngles = [
+    { name: "Founder interviews", detail: "Available on request" },
+    { name: "Product imagery", detail: "High-res photography" },
+    { name: "Event data & trends", detail: "Insights from 500+ events" },
+    { name: "On-location filming", detail: "By arrangement" },
   ];
 
   return (
@@ -45,9 +39,11 @@ export default function PressPage() {
         {/* Hero Section */}
         <section className="relative w-full min-h-[50vh] flex items-center bg-[#1D1D1D] px-6 lg:px-24 pt-32 pb-20">
           <div className="max-w-7xl mx-auto w-full">
-            <div className="max-w-3xl">
+            <Reveal className="max-w-3xl">
               <p
+                className="reveal-item"
                 style={{
+                  "--reveal-index": 0,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
                   fontWeight: 500,
@@ -55,144 +51,149 @@ export default function PressPage() {
                   letterSpacing: "2px",
                   textTransform: "uppercase",
                   marginBottom: "24px",
-                }}
+                } as React.CSSProperties}
               >
                 Press Kit
               </p>
               <h1
+                className="reveal-item"
                 style={{
+                  "--reveal-index": 1,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(48px, 8vw, 80px)",
                   fontWeight: 500,
                   color: "#FFFFFF",
                   lineHeight: 1.1,
                   letterSpacing: "-2px",
-                }}
+                } as React.CSSProperties}
               >
                 Press & Media
               </h1>
               <p
-                className="mt-6 max-w-xl"
+                className="reveal-item mt-6 max-w-xl"
                 style={{
+                  "--reveal-index": 2,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "18px",
                   fontWeight: 400,
                   color: "rgba(255, 255, 255, 0.6)",
                   lineHeight: 1.6,
-                }}
+                } as React.CSSProperties}
               >
-                Download our press kit, view recent coverage, or get in touch with our PR team.
+                Download our press kit, explore brand assets, or get in touch with our team. Press enquiries welcome.
               </p>
               <a
                 href="#"
-                className="inline-flex items-center gap-3 mt-10 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:bg-white/90 transition-all"
-                style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
+                className="reveal-item inline-flex items-center gap-3 mt-10 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium press-scale hover:bg-white/90"
+                style={{ "--reveal-index": 3, fontFamily: "var(--font-helvetica-now)", fontSize: "15px" } as React.CSSProperties}
               >
                 Download Press Kit
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
                 </svg>
               </a>
-            </div>
+            </Reveal>
           </div>
         </section>
 
-        {/* Press Features */}
+        {/* Selfy at a glance */}
         <section className="px-6 lg:px-24 py-24">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <h2
-              className="mb-12"
+              className="reveal-item mb-12"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "48px",
                 fontWeight: 500,
                 color: "#1D1D1D",
                 letterSpacing: "-1px",
-              }}
+              } as React.CSSProperties}
             >
-              In the press
+              Selfy at a glance
             </h2>
-            <div className="space-y-4">
-              {pressFeatures.map((article, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="group flex flex-col md:flex-row md:items-center justify-between p-6 rounded-2xl bg-white hover:bg-[#1D1D1D] transition-all duration-300"
-                >
-                  <div>
-                    <p
-                      className="group-hover:text-white/60 transition-colors mb-1"
-                      style={{
-                        fontFamily: "var(--font-helvetica-now)",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        color: "#888888",
-                      }}
-                    >
-                      {article.publication}
-                    </p>
-                    <h3
-                      className="group-hover:text-white transition-colors"
-                      style={{
-                        fontFamily: "var(--font-helvetica-now)",
-                        fontSize: "20px",
-                        fontWeight: 500,
-                        color: "#1D1D1D",
-                      }}
-                    >
-                      {article.title}
-                    </h3>
-                  </div>
-                  <div className="flex items-center gap-4 mt-4 md:mt-0">
-                    <span
-                      className="group-hover:text-white/40 transition-colors"
-                      style={{
-                        fontFamily: "var(--font-helvetica-now)",
-                        fontSize: "14px",
-                        fontWeight: 400,
-                        color: "#888888",
-                      }}
-                    >
-                      {article.date}
-                    </span>
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      className="text-black/30 group-hover:text-white transition-colors"
-                    >
-                      <path d="M7 17L17 7M17 7H7M17 7V17" />
-                    </svg>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Awards */}
-        <section className="px-6 lg:px-24 py-24 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <h2
-              className="mb-12"
-              style={{
-                fontFamily: "var(--font-helvetica-now)",
-                fontSize: "48px",
-                fontWeight: 500,
-                color: "#1D1D1D",
-                letterSpacing: "-1px",
-              }}
-            >
-              Awards & Recognition
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {awards.map((award, index) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className="p-6 rounded-2xl bg-[#F5F5F5] text-center"
+                  className="reveal-item p-8 rounded-2xl bg-white"
+                  style={{ "--reveal-index": Math.min(index + 1, 5) } as React.CSSProperties}
+                >
+                  <p
+                    style={{
+                      fontFamily: "var(--font-helvetica-now)",
+                      fontSize: "48px",
+                      fontWeight: 500,
+                      color: "#1D1D1D",
+                      lineHeight: 1,
+                      marginBottom: "8px",
+                    }}
+                  >
+                    {stat.value}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-helvetica-now)",
+                      fontSize: "16px",
+                      fontWeight: 500,
+                      color: "#1D1D1D",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    {stat.label}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-helvetica-now)",
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      color: "#888888",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {stat.detail}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </section>
+
+        {/* For journalists */}
+        <section className="px-6 lg:px-24 py-24 bg-white">
+          <Reveal className="max-w-7xl mx-auto">
+            <h2
+              className="reveal-item mb-6"
+              style={{
+                "--reveal-index": 0,
+                fontFamily: "var(--font-helvetica-now)",
+                fontSize: "48px",
+                fontWeight: 500,
+                color: "#1D1D1D",
+                letterSpacing: "-1px",
+              } as React.CSSProperties}
+            >
+              Press enquiries welcome
+            </h2>
+            <p
+              className="reveal-item max-w-xl mb-12"
+              style={{
+                "--reveal-index": 1,
+                fontFamily: "var(--font-helvetica-now)",
+                fontSize: "18px",
+                fontWeight: 400,
+                color: "#666666",
+                lineHeight: 1.6,
+              } as React.CSSProperties}
+            >
+              Writing about events, weddings, or experiential marketing? We&apos;re happy to help with:
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {storyAngles.map((item, index) => (
+                <div
+                  key={index}
+                  className="reveal-item p-6 rounded-2xl bg-[#F5F5F5] text-center"
+                  style={{ "--reveal-index": Math.min(index + 2, 5) } as React.CSSProperties}
                 >
                   <p
                     style={{
@@ -203,7 +204,7 @@ export default function PressPage() {
                       marginBottom: "4px",
                     }}
                   >
-                    {award.name}
+                    {item.name}
                   </p>
                   <p
                     style={{
@@ -213,45 +214,48 @@ export default function PressPage() {
                       color: "#888888",
                     }}
                   >
-                    {award.year}
+                    {item.detail}
                   </p>
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Brand Assets */}
         <section className="px-6 lg:px-24 py-24">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <h2
-              className="mb-6"
+              className="reveal-item mb-6"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "48px",
                 fontWeight: 500,
                 color: "#1D1D1D",
                 letterSpacing: "-1px",
-              }}
+              } as React.CSSProperties}
             >
               Brand Assets
             </h2>
             <p
-              className="max-w-xl mb-12"
+              className="reveal-item max-w-xl mb-12"
               style={{
+                "--reveal-index": 1,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "#666666",
                 lineHeight: 1.6,
-              }}
+              } as React.CSSProperties}
             >
               Download our logo, product images, and brand guidelines for press and media use.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <a
                 href="#"
-                className="p-6 rounded-2xl bg-white hover:bg-[#1D1D1D] group transition-all duration-300"
+                className="reveal-item p-6 rounded-2xl bg-white hover:bg-[#1D1D1D] group transition-colors duration-300"
+                style={{ "--reveal-index": 2 } as React.CSSProperties}
               >
                 <h3
                   className="group-hover:text-white transition-colors"
@@ -279,7 +283,8 @@ export default function PressPage() {
               </a>
               <a
                 href="#"
-                className="p-6 rounded-2xl bg-white hover:bg-[#1D1D1D] group transition-all duration-300"
+                className="reveal-item p-6 rounded-2xl bg-white hover:bg-[#1D1D1D] group transition-colors duration-300"
+                style={{ "--reveal-index": 3 } as React.CSSProperties}
               >
                 <h3
                   className="group-hover:text-white transition-colors"
@@ -307,7 +312,8 @@ export default function PressPage() {
               </a>
               <a
                 href="#"
-                className="p-6 rounded-2xl bg-white hover:bg-[#1D1D1D] group transition-all duration-300"
+                className="reveal-item p-6 rounded-2xl bg-white hover:bg-[#1D1D1D] group transition-colors duration-300"
+                style={{ "--reveal-index": 4 } as React.CSSProperties}
               >
                 <h3
                   className="group-hover:text-white transition-colors"
@@ -334,47 +340,50 @@ export default function PressPage() {
                 </p>
               </a>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Contact */}
         <section className="px-6 lg:px-24 py-24 bg-[#1D1D1D]">
-          <div className="max-w-7xl mx-auto text-center">
+          <Reveal className="max-w-7xl mx-auto text-center">
             <h2
+              className="reveal-item"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(36px, 5vw, 56px)",
                 fontWeight: 500,
                 color: "#FFFFFF",
                 lineHeight: 1.1,
                 marginBottom: "24px",
-              }}
+              } as React.CSSProperties}
             >
               Media enquiries
             </h2>
             <p
-              className="max-w-xl mx-auto mb-10"
+              className="reveal-item max-w-xl mx-auto mb-10"
               style={{
+                "--reveal-index": 1,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+              } as React.CSSProperties}
             >
               For press enquiries, interviews, or additional information, please contact our PR team.
             </p>
             <a
-              href="mailto:press@selfy.co.uk"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:bg-white/90 transition-all"
+              href="mailto:hello@selfy.photo"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium press-scale hover:bg-white/90"
               style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
             >
-              press@selfy.co.uk
+              hello@selfy.photo
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
               </svg>
             </a>
-          </div>
+          </Reveal>
         </section>
       </main>
       <Footer />

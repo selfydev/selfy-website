@@ -3,6 +3,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Reveal from "@/components/Reveal";
 import { useState } from "react";
 
 const projects = [
@@ -72,9 +73,11 @@ export default function WorkPage() {
         {/* Hero Section */}
         <section className="relative w-full min-h-[50vh] flex items-center bg-[#1D1D1D] px-6 lg:px-24 pt-32 pb-20">
           <div className="max-w-7xl mx-auto w-full">
-            <div className="max-w-3xl">
+            <Reveal className="max-w-3xl">
               <p
+                className="reveal-item"
                 style={{
+                  "--reveal-index": 0,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
                   fontWeight: 500,
@@ -82,35 +85,38 @@ export default function WorkPage() {
                   letterSpacing: "2px",
                   textTransform: "uppercase",
                   marginBottom: "24px",
-                }}
+                } as React.CSSProperties}
               >
                 Our Work
               </p>
               <h1
+                className="reveal-item"
                 style={{
+                  "--reveal-index": 1,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(48px, 8vw, 80px)",
                   fontWeight: 500,
                   color: "#FFFFFF",
                   lineHeight: 1.1,
                   letterSpacing: "-2px",
-                }}
+                } as React.CSSProperties}
               >
-                Events we're proud of.
+                Events we&apos;re proud of.
               </h1>
               <p
-                className="mt-6 max-w-xl"
+                className="reveal-item mt-6 max-w-xl"
                 style={{
+                  "--reveal-index": 2,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "18px",
                   fontWeight: 400,
                   color: "rgba(255, 255, 255, 0.6)",
                   lineHeight: 1.6,
-                }}
+                } as React.CSSProperties}
               >
-                From intimate celebrations to global brand activations, here's a selection of the events we've had the privilege of being part of.
+                From intimate celebrations to global brand activations, here&apos;s a selection of the events we&apos;ve had the privilege of being part of.
               </p>
-            </div>
+            </Reveal>
           </div>
         </section>
 
@@ -122,7 +128,7 @@ export default function WorkPage() {
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className="px-5 py-2.5 rounded-full transition-all"
+                  className="press-scale px-5 py-2.5 rounded-full"
                   style={{
                     fontFamily: "var(--font-helvetica-now)",
                     fontSize: "14px",
@@ -142,11 +148,12 @@ export default function WorkPage() {
         {/* Projects Grid */}
         <section className="px-6 lg:px-24 py-16">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Reveal className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {filteredProjects.map((project, index) => (
                 <div
                   key={index}
-                  className="group p-8 rounded-2xl bg-white hover:bg-[#1D1D1D] transition-all duration-300 cursor-pointer"
+                  className="reveal-item group p-8 rounded-2xl bg-white hover:bg-[#1D1D1D] transition-colors duration-300 cursor-pointer"
+                  style={{ "--reveal-index": Math.min(index, 5) } as React.CSSProperties}
                 >
                   <span
                     className="inline-block px-3 py-1 rounded-full mb-6 transition-colors duration-300"
@@ -161,7 +168,7 @@ export default function WorkPage() {
                     <span className="group-hover:hidden">{project.category}</span>
                     <span className="hidden group-hover:inline text-white/60">{project.category}</span>
                   </span>
-                  <h3
+                  <h2
                     className="transition-colors duration-300 group-hover:text-white"
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -172,7 +179,7 @@ export default function WorkPage() {
                     }}
                   >
                     {project.title}
-                  </h3>
+                  </h2>
                   <p
                     className="transition-colors duration-300 group-hover:text-white/60"
                     style={{
@@ -199,40 +206,43 @@ export default function WorkPage() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* CTA Section */}
         <section className="px-6 lg:px-24 py-24 bg-[#1D1D1D]">
-          <div className="max-w-7xl mx-auto text-center">
+          <Reveal className="max-w-7xl mx-auto text-center">
             <h2
+              className="reveal-item"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(36px, 5vw, 56px)",
                 fontWeight: 500,
                 color: "#FFFFFF",
                 lineHeight: 1.1,
                 marginBottom: "24px",
-              }}
+              } as React.CSSProperties}
             >
               Ready to create something amazing?
             </h2>
             <p
-              className="max-w-xl mx-auto mb-10"
+              className="reveal-item max-w-xl mx-auto mb-10"
               style={{
+                "--reveal-index": 1,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+              } as React.CSSProperties}
             >
-              Let's discuss how we can make your event unforgettable.
+              Let&apos;s discuss how we can make your event unforgettable.
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:bg-white/90 transition-all"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium press-scale hover:bg-white/90"
               style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
             >
               Start a project
@@ -240,7 +250,7 @@ export default function WorkPage() {
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
               </svg>
             </Link>
-          </div>
+          </Reveal>
         </section>
       </main>
       <Footer />

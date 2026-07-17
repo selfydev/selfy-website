@@ -40,7 +40,7 @@ const CardItem = ({ item }: { item: typeof pressItems[0] }) => (
 
 const PressCarousel = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const positionRef = useRef(0);
 
   useEffect(() => {

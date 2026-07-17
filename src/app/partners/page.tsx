@@ -1,8 +1,21 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Link from "next/link";
+import Reveal from "@/components/Reveal";
+import { useState } from "react";
+import { submitForm, type FormStatus } from "@/lib/forms";
 
 export default function PartnersPage() {
+  const [status, setStatus] = useState<FormStatus>("idle");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("submitting");
+    const ok = await submitForm(e.currentTarget);
+    setStatus(ok ? "success" : "error");
+  };
+
   const partnerTypes = [
     {
       title: "Event Planners",
@@ -47,9 +60,11 @@ export default function PartnersPage() {
         {/* Hero Section */}
         <section className="relative w-full min-h-[70vh] flex items-center bg-[#1D1D1D] px-6 lg:px-24 pt-32 pb-20">
           <div className="max-w-7xl mx-auto w-full">
-            <div className="max-w-3xl">
+            <Reveal className="max-w-3xl">
               <p
+                className="reveal-item"
                 style={{
+                  "--reveal-index": 0,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
                   fontWeight: 500,
@@ -57,65 +72,72 @@ export default function PartnersPage() {
                   letterSpacing: "2px",
                   textTransform: "uppercase",
                   marginBottom: "24px",
-                }}
+                } as React.CSSProperties}
               >
                 Partners
               </p>
               <h1
+                className="reveal-item"
                 style={{
+                  "--reveal-index": 1,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(48px, 8vw, 80px)",
                   fontWeight: 500,
                   color: "#FFFFFF",
                   lineHeight: 1.1,
                   letterSpacing: "-2px",
-                }}
+                } as React.CSSProperties}
               >
-                Let's grow together.
+                Let&apos;s grow together.
               </h1>
               <p
-                className="mt-6 max-w-xl"
+                className="reveal-item mt-6 max-w-xl"
                 style={{
+                  "--reveal-index": 2,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "18px",
                   fontWeight: 400,
                   color: "rgba(255, 255, 255, 0.6)",
                   lineHeight: 1.6,
-                }}
+                } as React.CSSProperties}
               >
                 Join our network of event planners, venues, and agencies. Together, we create unforgettable experiences.
               </p>
               <a
                 href="#apply"
-                className="inline-flex items-center gap-3 mt-10 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:bg-white/90 transition-all"
-                style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
+                className="reveal-item inline-flex items-center gap-3 mt-10 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium press-scale hover:bg-white/90"
+                style={{ "--reveal-index": 3, fontFamily: "var(--font-helvetica-now)", fontSize: "15px" } as React.CSSProperties}
               >
                 Become a partner
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M7 17L17 7M17 7H7M17 7V17" />
                 </svg>
               </a>
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Trusted By */}
         <section className="px-6 lg:px-24 py-16 bg-white">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <p
-              className="text-center mb-8"
+              className="reveal-item text-center mb-8"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "14px",
                 fontWeight: 500,
                 color: "#888888",
                 letterSpacing: "1px",
                 textTransform: "uppercase",
-              }}
+              } as React.CSSProperties}
             >
               Trusted by leading brands
             </p>
-            <div className="flex flex-wrap justify-center gap-x-16 gap-y-6">
+            <div
+              className="reveal-item flex flex-wrap justify-center gap-x-16 gap-y-6"
+              style={{ "--reveal-index": 1 } as React.CSSProperties}
+            >
               {logos.map((logo, index) => (
                 <span
                   key={index}
@@ -130,21 +152,22 @@ export default function PartnersPage() {
                 </span>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Partner Types */}
         <section className="px-6 lg:px-24 py-24">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <h2
-              className="mb-16"
+              className="reveal-item mb-16"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "48px",
                 fontWeight: 500,
                 color: "#1D1D1D",
                 letterSpacing: "-1px",
-              }}
+              } as React.CSSProperties}
             >
               Partnership opportunities
             </h2>
@@ -152,7 +175,8 @@ export default function PartnersPage() {
               {partnerTypes.map((type, index) => (
                 <div
                   key={index}
-                  className="p-8 rounded-2xl bg-white"
+                  className="reveal-item p-8 rounded-2xl bg-white"
+                  style={{ "--reveal-index": Math.min(index + 1, 5) } as React.CSSProperties}
                 >
                   <h3
                     style={{
@@ -214,40 +238,77 @@ export default function PartnersPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Application Form */}
         <section id="apply" className="px-6 lg:px-24 py-24 bg-white">
-          <div className="max-w-2xl mx-auto">
+          <Reveal className="max-w-2xl mx-auto">
             <h2
-              className="text-center mb-4"
+              className="reveal-item text-center mb-4"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "48px",
                 fontWeight: 500,
                 color: "#1D1D1D",
                 letterSpacing: "-1px",
-              }}
+              } as React.CSSProperties}
             >
               Apply to partner
             </h2>
             <p
-              className="text-center mb-12"
+              className="reveal-item text-center mb-12"
               style={{
+                "--reveal-index": 1,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "#666666",
                 lineHeight: 1.6,
-              }}
+              } as React.CSSProperties}
             >
               Fill out the form below and our partnerships team will be in touch.
             </p>
-            <form className="space-y-6">
+            {status === "success" ? (
+              <div
+                className="reveal-item py-16 text-center"
+                style={{ "--reveal-index": 2 } as React.CSSProperties}
+              >
+                <h3
+                  style={{
+                    fontFamily: "var(--font-helvetica-now)",
+                    fontSize: "28px",
+                    fontWeight: 500,
+                    color: "#1D1D1D",
+                    marginBottom: "12px",
+                  }}
+                >
+                  Thank you
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "var(--font-helvetica-now)",
+                    fontSize: "16px",
+                    fontWeight: 400,
+                    color: "#888888",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Our partnerships team will be in touch soon.
+                </p>
+              </div>
+            ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="reveal-item space-y-6"
+              style={{ "--reveal-index": 2 } as React.CSSProperties}
+            >
+              <input type="hidden" name="form" value="partner-application" />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label
+                    htmlFor="partner-name"
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
                       fontSize: "14px",
@@ -260,7 +321,9 @@ export default function PartnersPage() {
                     Name
                   </label>
                   <input
+                    id="partner-name"
                     type="text"
+                    name="name"
                     className="w-full px-4 py-3 rounded-xl bg-[#F5F5F5] border border-black/5 outline-none focus:border-black/20 transition-colors"
                     style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
                     required
@@ -268,6 +331,7 @@ export default function PartnersPage() {
                 </div>
                 <div>
                   <label
+                    htmlFor="partner-company"
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
                       fontSize: "14px",
@@ -280,7 +344,9 @@ export default function PartnersPage() {
                     Company
                   </label>
                   <input
+                    id="partner-company"
                     type="text"
+                    name="company"
                     className="w-full px-4 py-3 rounded-xl bg-[#F5F5F5] border border-black/5 outline-none focus:border-black/20 transition-colors"
                     style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
                     required
@@ -289,6 +355,7 @@ export default function PartnersPage() {
               </div>
               <div>
                 <label
+                  htmlFor="partner-email"
                   style={{
                     fontFamily: "var(--font-helvetica-now)",
                     fontSize: "14px",
@@ -301,7 +368,9 @@ export default function PartnersPage() {
                   Email
                 </label>
                 <input
+                  id="partner-email"
                   type="email"
+                  name="email"
                   className="w-full px-4 py-3 rounded-xl bg-[#F5F5F5] border border-black/5 outline-none focus:border-black/20 transition-colors"
                   style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
                   required
@@ -309,6 +378,7 @@ export default function PartnersPage() {
               </div>
               <div>
                 <label
+                  htmlFor="partner-partnership-type"
                   style={{
                     fontFamily: "var(--font-helvetica-now)",
                     fontSize: "14px",
@@ -321,6 +391,8 @@ export default function PartnersPage() {
                   Partnership type
                 </label>
                 <select
+                  id="partner-partnership-type"
+                  name="partnershipType"
                   className="w-full px-4 py-3 rounded-xl bg-[#F5F5F5] border border-black/5 outline-none focus:border-black/20 transition-colors"
                   style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
                   required
@@ -334,6 +406,7 @@ export default function PartnersPage() {
               </div>
               <div>
                 <label
+                  htmlFor="partner-message"
                   style={{
                     fontFamily: "var(--font-helvetica-now)",
                     fontSize: "14px",
@@ -346,6 +419,8 @@ export default function PartnersPage() {
                   Tell us about your business
                 </label>
                 <textarea
+                  id="partner-message"
+                  name="message"
                   rows={4}
                   className="w-full px-4 py-3 rounded-xl bg-[#F5F5F5] border border-black/5 outline-none focus:border-black/20 transition-colors resize-none"
                   style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
@@ -354,13 +429,30 @@ export default function PartnersPage() {
               </div>
               <button
                 type="submit"
-                className="w-full py-4 rounded-full bg-[#1D1D1D] text-white font-medium hover:bg-black/80 transition-colors"
+                disabled={status === "submitting"}
+                className={`press-scale w-full py-4 rounded-full bg-[#1D1D1D] text-white font-medium hover:bg-black/80 ${
+                  status === "submitting" ? "opacity-50 cursor-not-allowed" : ""
+                }`}
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
               >
-                Submit application
+                {status === "submitting" ? "Sending…" : "Submit application"}
               </button>
+              {status === "error" && (
+                <p
+                  className="text-center"
+                  style={{
+                    fontFamily: "var(--font-helvetica-now)",
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    color: "#DC2626",
+                  }}
+                >
+                  Something went wrong — please email us instead.
+                </p>
+              )}
             </form>
-          </div>
+            )}
+          </Reveal>
         </section>
       </main>
       <Footer />

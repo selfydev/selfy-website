@@ -26,9 +26,9 @@ const showcaseData: Record<"events" | "corporate", ShowcaseContent> = {
       "Built-in analytics",
     ],
     items: [
-      { image: "/images/showcase/events-1.PNG", alt: "Wedding photo booth" },
-      { image: "/images/showcase/events-2.PNG", alt: "Party celebration" },
-      { image: "/images/showcase/events-3.PNG", alt: "Birthday event" },
+      { image: "/images/showcase/events-1.jpg", alt: "Wedding photo booth" },
+      { image: "/images/showcase/events-2.jpg", alt: "Party celebration" },
+      { image: "/images/showcase/events-3.jpg", alt: "Birthday event" },
     ],
   },
   corporate: {
@@ -42,9 +42,9 @@ const showcaseData: Record<"events" | "corporate", ShowcaseContent> = {
       "White-label options",
     ],
     items: [
-      { image: "/images/showcase/corporate-1.png", alt: "Corporate event" },
-      { image: "/images/showcase/corporate-2.png", alt: "Brand activation" },
-      { image: "/images/showcase/corporate-3.png", alt: "Company celebration" },
+      { image: "/images/showcase/corporate-1.jpg", alt: "Corporate event" },
+      { image: "/images/showcase/corporate-2.jpg", alt: "Brand activation" },
+      { image: "/images/showcase/corporate-3.jpg", alt: "Company celebration" },
     ],
   },
 };
@@ -67,22 +67,30 @@ const Showcase = () => {
 
   const content = showcaseData[activeCategory];
 
-  // Auto-play carousel
-  const startAutoPlay = useCallback(() => {
-    if (autoPlayRef.current) {
-      clearInterval(autoPlayRef.current);
-    }
-    autoPlayRef.current = setInterval(() => {
-      goToNext();
-    }, 5000);
-  }, []);
-
   const goToNext = useCallback(() => {
     if (isImageTransitioning) return;
     setIsImageTransitioning(true);
     setCurrentIndex((prev) => (prev + 1) % content.items.length);
     setTimeout(() => setIsImageTransitioning(false), 500);
   }, [content.items.length, isImageTransitioning]);
+
+  // Keep a ref to the latest goToNext so the autoplay interval never
+  // calls a stale closure.
+  const goToNextRef = useRef<() => void>(() => {});
+
+  useEffect(() => {
+    goToNextRef.current = goToNext;
+  }, [goToNext]);
+
+  // Auto-play carousel
+  const startAutoPlay = useCallback(() => {
+    if (autoPlayRef.current) {
+      clearInterval(autoPlayRef.current);
+    }
+    autoPlayRef.current = setInterval(() => {
+      goToNextRef.current();
+    }, 5000);
+  }, []);
 
   const goToPrev = useCallback(() => {
     if (isImageTransitioning) return;
@@ -99,11 +107,6 @@ const Showcase = () => {
       }
     };
   }, [startAutoPlay, activeCategory]);
-
-  // Reset index when category changes
-  useEffect(() => {
-    setCurrentIndex(0);
-  }, [activeCategory]);
 
   // Smooth cursor trailing animation
   useEffect(() => {
@@ -141,6 +144,7 @@ const Showcase = () => {
       setIsCategoryTransitioning(true);
       setTimeout(() => {
         setActiveCategory(category);
+        setCurrentIndex(0); // Reset index when category changes
         setIsCategoryTransitioning(false);
       }, 300);
     }
@@ -156,7 +160,7 @@ const Showcase = () => {
     >
       {/* Gradient Background - changes based on category */}
       <div
-        className="absolute inset-0 pointer-events-none z-[1] transition-all duration-500"
+        className="absolute inset-0 pointer-events-none z-[1] transition-[background] duration-500"
         style={{
           background: activeCategory === "events"
             ? "linear-gradient(to top, rgba(230,240,250,1) 0%, rgba(240,247,255,0.8) 30%, rgba(255,255,255,1) 100%)"
@@ -180,7 +184,7 @@ const Showcase = () => {
                 alt={item.alt}
                 fill
                 sizes="100vw"
-                className="object-cover lg:object-contain object-bottom"
+                className="object-cover lg:object-contain object-bottom img-outline"
                 priority={index === 0}
               />
             </div>
@@ -202,7 +206,7 @@ const Showcase = () => {
           >
             <button
               onClick={() => handleCategoryChange("events")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-4 py-2 rounded-full text-sm font-medium press-scale ${
                 activeCategory === "events"
                   ? "bg-white text-black"
                   : "text-black/60 hover:text-black/80"
@@ -212,7 +216,7 @@ const Showcase = () => {
             </button>
             <button
               onClick={() => handleCategoryChange("corporate")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-4 py-2 rounded-full text-sm font-medium press-scale ${
                 activeCategory === "corporate"
                   ? "bg-white text-black"
                   : "text-black/60 hover:text-black/80"
@@ -259,7 +263,7 @@ const Showcase = () => {
           <button
             onClick={goToPrev}
             disabled={isImageTransitioning}
-            className="w-12 h-12 rounded-full flex items-center justify-center hover:opacity-70 transition-opacity disabled:opacity-50"
+            className="w-12 h-12 rounded-full flex items-center justify-center hover:opacity-70 press-scale disabled:opacity-50"
             style={{ border: "1px solid rgba(29, 29, 29, 0.2)", color: "rgba(29, 29, 29, 0.2)" }}
             aria-label="Previous slide"
           >
@@ -279,7 +283,7 @@ const Showcase = () => {
           <button
             onClick={goToNext}
             disabled={isImageTransitioning}
-            className="w-12 h-12 rounded-full flex items-center justify-center hover:opacity-70 transition-opacity disabled:opacity-50"
+            className="w-12 h-12 rounded-full flex items-center justify-center hover:opacity-70 press-scale disabled:opacity-50"
             style={{ border: "1px solid rgba(29, 29, 29, 0.2)", color: "rgba(29, 29, 29, 0.2)" }}
             aria-label="Next slide"
           >
@@ -309,7 +313,7 @@ const Showcase = () => {
                     setTimeout(() => setIsImageTransitioning(false), 500);
                   }
                 }}
-                className={`h-2 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-full transition-[width] duration-300 ${
                   index === currentIndex ? "w-6" : "w-2"
                 }`}
                 style={{ backgroundColor: "rgba(29, 29, 29, 0.2)" }}

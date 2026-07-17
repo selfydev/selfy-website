@@ -2,12 +2,14 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 import { useState, useEffect } from "react";
+import { submitForm, type FormStatus } from "@/lib/forms";
 
 export default function ContactPage() {
   const [londonTime, setLondonTime] = useState("");
   const [dubaiTime, setDubaiTime] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -39,9 +41,11 @@ export default function ContactPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setStatus("submitting");
+    const ok = await submitForm(e.currentTarget);
+    setStatus(ok ? "success" : "error");
   };
 
   return (
@@ -50,9 +54,11 @@ export default function ContactPage() {
       <main className="bg-[#F5F5F5]">
         {/* Hero */}
         <section className="w-full bg-[#1D1D1D] px-6 lg:px-24 pt-32 pb-20">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <p
+              className="reveal-item"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "14px",
                 fontWeight: 500,
@@ -60,44 +66,50 @@ export default function ContactPage() {
                 letterSpacing: "2px",
                 textTransform: "uppercase",
                 marginBottom: "24px",
-              }}
+              } as React.CSSProperties}
             >
               Contact
             </p>
             <h1
+              className="reveal-item"
               style={{
+                "--reveal-index": 1,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(48px, 8vw, 80px)",
                 fontWeight: 500,
                 color: "#FFFFFF",
                 lineHeight: 1.1,
                 letterSpacing: "-2px",
-              }}
+              } as React.CSSProperties}
             >
               Get in touch.
             </h1>
             <p
-              className="mt-6 max-w-xl"
+              className="reveal-item mt-6 max-w-xl"
               style={{
+                "--reveal-index": 2,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+              } as React.CSSProperties}
             >
-              Have a question or want to book? We'd love to hear from you.
+              Have a question or want to book? We&apos;d love to hear from you.
             </p>
-          </div>
+          </Reveal>
         </section>
 
         {/* Contact Form & Info */}
         <section className="px-6 lg:px-24 py-24">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <Reveal className="grid grid-cols-1 lg:grid-cols-2 gap-16">
               {/* Form */}
-              <div className="bg-white rounded-2xl p-8 lg:p-10">
-                {!isSubmitted ? (
+              <div
+                className="reveal-item bg-white rounded-2xl p-8 lg:p-10"
+                style={{ "--reveal-index": 0 } as React.CSSProperties}
+              >
+                {status !== "success" ? (
                   <>
                     <h2
                       style={{
@@ -111,9 +123,11 @@ export default function ContactPage() {
                       Send us a message
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-6">
+                      <input type="hidden" name="form" value="contact" />
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label
+                            htmlFor="contact-name"
                             style={{
                               fontFamily: "var(--font-helvetica-now)",
                               fontSize: "14px",
@@ -126,7 +140,9 @@ export default function ContactPage() {
                             Name
                           </label>
                           <input
+                            id="contact-name"
                             type="text"
+                            name="name"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             className="w-full px-4 py-3 rounded-xl bg-[#F5F5F5] border border-transparent outline-none focus:border-black/10 transition-colors"
@@ -136,6 +152,7 @@ export default function ContactPage() {
                         </div>
                         <div>
                           <label
+                            htmlFor="contact-email"
                             style={{
                               fontFamily: "var(--font-helvetica-now)",
                               fontSize: "14px",
@@ -148,7 +165,9 @@ export default function ContactPage() {
                             Email
                           </label>
                           <input
+                            id="contact-email"
                             type="email"
+                            name="email"
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             className="w-full px-4 py-3 rounded-xl bg-[#F5F5F5] border border-transparent outline-none focus:border-black/10 transition-colors"
@@ -160,6 +179,7 @@ export default function ContactPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label
+                            htmlFor="contact-company"
                             style={{
                               fontFamily: "var(--font-helvetica-now)",
                               fontSize: "14px",
@@ -172,7 +192,9 @@ export default function ContactPage() {
                             Company
                           </label>
                           <input
+                            id="contact-company"
                             type="text"
+                            name="company"
                             value={formData.company}
                             onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                             className="w-full px-4 py-3 rounded-xl bg-[#F5F5F5] border border-transparent outline-none focus:border-black/10 transition-colors"
@@ -181,6 +203,7 @@ export default function ContactPage() {
                         </div>
                         <div>
                           <label
+                            htmlFor="contact-event-type"
                             style={{
                               fontFamily: "var(--font-helvetica-now)",
                               fontSize: "14px",
@@ -193,6 +216,8 @@ export default function ContactPage() {
                             Event type
                           </label>
                           <select
+                            id="contact-event-type"
+                            name="eventType"
                             value={formData.eventType}
                             onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
                             className="w-full px-4 py-3 rounded-xl bg-[#F5F5F5] border border-transparent outline-none focus:border-black/10 transition-colors"
@@ -209,6 +234,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <label
+                          htmlFor="contact-message"
                           style={{
                             fontFamily: "var(--font-helvetica-now)",
                             fontSize: "14px",
@@ -221,6 +247,8 @@ export default function ContactPage() {
                           Message
                         </label>
                         <textarea
+                          id="contact-message"
+                          name="message"
                           value={formData.message}
                           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                           rows={5}
@@ -232,11 +260,26 @@ export default function ContactPage() {
                       </div>
                       <button
                         type="submit"
-                        className="w-full py-4 rounded-full bg-[#1D1D1D] text-white font-medium hover:opacity-90 transition-opacity"
+                        disabled={status === "submitting"}
+                        className={`w-full py-4 rounded-full bg-[#1D1D1D] text-white font-medium press-scale hover:opacity-90 ${
+                          status === "submitting" ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                         style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
                       >
-                        Send message
+                        {status === "submitting" ? "Sending…" : "Send message"}
                       </button>
+                      {status === "error" && (
+                        <p
+                          style={{
+                            fontFamily: "var(--font-helvetica-now)",
+                            fontSize: "14px",
+                            fontWeight: 400,
+                            color: "#DC2626",
+                          }}
+                        >
+                          Something went wrong — please email us instead.
+                        </p>
+                      )}
                     </form>
                   </>
                 ) : (
@@ -261,14 +304,17 @@ export default function ContactPage() {
                         lineHeight: 1.6,
                       }}
                     >
-                      We'll get back to you within 24 hours.
+                      We&apos;ll get back to you within 24 hours.
                     </p>
                   </div>
                 )}
               </div>
 
               {/* Contact Info */}
-              <div className="space-y-8">
+              <div
+                className="reveal-item space-y-8"
+                style={{ "--reveal-index": 1 } as React.CSSProperties}
+              >
                 {/* Email & Phone */}
                 <div className="bg-white rounded-2xl p-8">
                   <h3
@@ -298,7 +344,7 @@ export default function ContactPage() {
                         Email
                       </p>
                       <a
-                        href="mailto:hello@selfy.co.uk"
+                        href="mailto:hello@selfy.photo"
                         className="hover:opacity-70 transition-opacity"
                         style={{
                           fontFamily: "var(--font-helvetica-now)",
@@ -307,7 +353,7 @@ export default function ContactPage() {
                           color: "#1D1D1D",
                         }}
                       >
-                        hello@selfy.co.uk
+                        hello@selfy.photo
                       </a>
                     </div>
                     <div>
@@ -325,7 +371,7 @@ export default function ContactPage() {
                         Phone
                       </p>
                       <a
-                        href="tel:+442012345678"
+                        href="tel:+442034882312"
                         className="hover:opacity-70 transition-opacity"
                         style={{
                           fontFamily: "var(--font-helvetica-now)",
@@ -334,7 +380,7 @@ export default function ContactPage() {
                           color: "#1D1D1D",
                         }}
                       >
-                        +44 20 1234 5678
+                        +44 203 488 2312
                       </a>
                     </div>
                   </div>
@@ -389,9 +435,9 @@ export default function ContactPage() {
                           lineHeight: 1.6,
                         }}
                       >
-                        128 City Road
+                        20-22 Wenlock Road
                         <br />
-                        London, EC1V 2NX
+                        London, N1 7GU
                       </p>
                     </div>
 
@@ -453,7 +499,7 @@ export default function ContactPage() {
                   </p>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
       </main>

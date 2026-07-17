@@ -3,17 +3,24 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Reveal from "@/components/Reveal";
+import { submitForm, type FormStatus } from "@/lib/forms";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email) {
-      setIsSubmitted(true);
+    if (!email) return;
+    setStatus("submitting");
+    const ok = await submitForm(e.currentTarget);
+    if (ok) {
+      setStatus("success");
       setEmail("");
+    } else {
+      setStatus("error");
     }
   };
 
@@ -50,47 +57,72 @@ export default function Footer() {
     },
   ];
 
+  const legalLinks = [
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms of Service", href: "/terms" },
+    { label: "Cookie Settings", href: "/cookies-policy" },
+    { label: "Refund Policy", href: "/refund-policy" },
+  ];
+
   const socialLinks = [
-    { label: "Instagram", href: "#", handle: "@selfy" },
-    { label: "TikTok", href: "#", handle: "@selfy" },
-    { label: "LinkedIn", href: "#", handle: "Selfy" },
-    { label: "YouTube", href: "#", handle: "Selfy" },
+    { label: "Instagram", href: "https://www.instagram.com/selfyco/", handle: "@selfyco" },
+    { label: "TikTok", href: "https://www.tiktok.com/@selfyco", handle: "@selfyco" },
+    { label: "Facebook", href: "https://www.facebook.com/selfyco/", handle: "@selfyco" },
+    { label: "X", href: "https://www.twitter.com/selfyco/", handle: "@selfyco" },
   ];
 
   return (
     <footer className="w-full bg-[#141414]">
       {/* Newsletter Section */}
       <div className="px-6 lg:px-24 py-16 lg:py-20 border-b border-white/5">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+        <Reveal className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-8">
           <div className="max-w-md">
             <h3
-              style={{
-                fontFamily: "var(--font-helvetica-now)",
-                fontSize: "28px",
-                fontWeight: 500,
-                color: "#FFFFFF",
-                marginBottom: "8px",
-              }}
+              className="reveal-item"
+              style={
+                {
+                  fontFamily: "var(--font-helvetica-now)",
+                  fontSize: "28px",
+                  fontWeight: 500,
+                  color: "#FFFFFF",
+                  marginBottom: "8px",
+                  "--reveal-index": 0,
+                } as React.CSSProperties
+              }
             >
               Stay updated
             </h3>
             <p
-              style={{
-                fontFamily: "var(--font-helvetica-now)",
-                fontSize: "15px",
-                fontWeight: 400,
-                color: "rgba(255, 255, 255, 0.5)",
-              }}
+              className="reveal-item"
+              style={
+                {
+                  fontFamily: "var(--font-helvetica-now)",
+                  fontSize: "15px",
+                  fontWeight: 400,
+                  color: "rgba(255, 255, 255, 0.5)",
+                  "--reveal-index": 1,
+                } as React.CSSProperties
+              }
             >
               Subscribe for industry insights, event tips, and exclusive updates.
             </p>
           </div>
-          <form onSubmit={handleSubmit} className="flex gap-3 w-full lg:w-auto">
+          <div
+            className="reveal-item w-full lg:w-auto"
+            style={{ "--reveal-index": 2 } as React.CSSProperties}
+          >
+          <form
+            onSubmit={handleSubmit}
+            className="flex gap-3 w-full lg:w-auto"
+          >
+            <input type="hidden" name="form" value="newsletter" />
             <input
               type="email"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
+              aria-label="Email address"
               className="flex-1 lg:w-72 px-5 py-3.5 rounded-full bg-white/5 border border-white/10 text-white placeholder:text-white/30 outline-none focus:border-white/30 transition-colors"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
@@ -99,16 +131,38 @@ export default function Footer() {
             />
             <button
               type="submit"
-              className="px-6 py-3.5 rounded-full bg-white text-[#1D1D1D] font-medium hover:bg-white/90 transition-colors whitespace-nowrap"
+              aria-label="Subscribe to newsletter"
+              disabled={status === "submitting"}
+              className={`press-scale px-6 py-3.5 rounded-full bg-white text-[#1D1D1D] font-medium hover:bg-white/90 whitespace-nowrap ${
+                status === "submitting" ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "14px",
               }}
             >
-              {isSubmitted ? "Subscribed" : "Subscribe"}
+              {status === "success"
+                ? "Subscribed"
+                : status === "submitting"
+                  ? "Sending…"
+                  : "Subscribe"}
             </button>
           </form>
-        </div>
+          {status === "error" && (
+            <p
+              className="mt-3"
+              style={{
+                fontFamily: "var(--font-helvetica-now)",
+                fontSize: "13px",
+                fontWeight: 400,
+                color: "#FCA5A5",
+              }}
+            >
+              Something went wrong — please email us instead.
+            </p>
+          )}
+          </div>
+        </Reveal>
       </div>
 
       {/* Main Navigation */}
@@ -184,6 +238,8 @@ export default function Footer() {
             <a
               key={social.label}
               href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group flex items-center gap-3"
               onMouseEnter={() => setHoveredLink(social.label)}
               onMouseLeave={() => setHoveredLink(null)}
@@ -223,7 +279,7 @@ export default function Footer() {
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
-                className="transition-all opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
+                className="transition-[opacity,transform] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
                 style={{ color: "rgba(255, 255, 255, 0.5)" }}
               >
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
@@ -258,43 +314,34 @@ export default function Footer() {
             >
               Registered in England & Wales
             </span>
+            <span
+              style={{
+                fontFamily: "var(--font-helvetica-now)",
+                fontSize: "13px",
+                fontWeight: 400,
+                color: "rgba(255, 255, 255, 0.2)",
+              }}
+            >
+              Selfy LTD · Company no. 10629457 · 20-22 Wenlock Road, London N1 7GU
+            </span>
           </div>
 
           {/* Right */}
-          <div className="flex items-center gap-6">
-            <Link
-              href="#"
-              className="text-white/30 hover:text-white/60 transition-colors"
-              style={{
-                fontFamily: "var(--font-helvetica-now)",
-                fontSize: "13px",
-                fontWeight: 400,
-              }}
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="#"
-              className="text-white/30 hover:text-white/60 transition-colors"
-              style={{
-                fontFamily: "var(--font-helvetica-now)",
-                fontSize: "13px",
-                fontWeight: 400,
-              }}
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="#"
-              className="text-white/30 hover:text-white/60 transition-colors"
-              style={{
-                fontFamily: "var(--font-helvetica-now)",
-                fontSize: "13px",
-                fontWeight: 400,
-              }}
-            >
-              Cookie Settings
-            </Link>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {legalLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-white/30 hover:text-white/60 transition-colors"
+                style={{
+                  fontFamily: "var(--font-helvetica-now)",
+                  fontSize: "13px",
+                  fontWeight: 400,
+                }}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

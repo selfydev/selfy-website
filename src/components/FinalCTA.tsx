@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Reveal from "@/components/Reveal";
 
 export default function FinalCTA() {
   const [londonTime, setLondonTime] = useState("");
@@ -39,9 +40,12 @@ export default function FinalCTA() {
     <section className="relative w-full bg-[#1D1D1D] px-6 lg:px-24 py-16 lg:py-20">
       <div className="max-w-7xl mx-auto">
         {/* Top Row - Headline + CTA */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12 pb-12 border-b border-white/10">
+        <Reveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12 pb-12 border-b border-white/10">
           <div>
-            <div className="flex items-center gap-2 mb-4">
+            <div
+              className="flex items-center gap-2 mb-4 reveal-item"
+              style={{ "--reveal-index": 0 } as React.CSSProperties}
+            >
               <div className="relative">
                 <div className="w-2 h-2 rounded-full bg-green-400" />
                 <div className="absolute inset-0 w-2 h-2 rounded-full bg-green-400 animate-ping" />
@@ -54,10 +58,11 @@ export default function FinalCTA() {
                   color: "rgba(255, 255, 255, 0.5)",
                 }}
               >
-                Accepting bookings for 2025
+                Accepting new bookings
               </span>
             </div>
             <h2
+              className="reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(36px, 7vw, 80px)",
@@ -65,14 +70,15 @@ export default function FinalCTA() {
                 color: "#FFFFFF",
                 lineHeight: 1,
                 letterSpacing: "-2px",
-              }}
+                "--reveal-index": 1,
+              } as React.CSSProperties}
             >
-              Let's work together.
+              Let&apos;s work together.
             </h2>
           </div>
           <a
-            href="mailto:hello@selfy.co.uk"
-            className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:bg-white/90 transition-all shrink-0"
+            href="mailto:hello@selfy.photo"
+            className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:bg-white/90 press-scale shrink-0"
             style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
           >
             Start a project
@@ -88,12 +94,15 @@ export default function FinalCTA() {
               <path d="M7 17L17 7M17 7H7M17 7V17" />
             </svg>
           </a>
-        </div>
+        </Reveal>
 
         {/* Middle Row - Stats + Offices */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+        <Reveal className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Left - Stats */}
-          <div>
+          <div
+            className="reveal-item"
+            style={{ "--reveal-index": 0 } as React.CSSProperties}
+          >
             <div className="grid grid-cols-4 gap-4">
               {stats.map((stat) => (
                 <div key={stat.label}>
@@ -128,7 +137,10 @@ export default function FinalCTA() {
           {/* Right - Offices */}
           <div className="grid grid-cols-2 gap-8">
             {/* London */}
-            <div>
+            <div
+              className="reveal-item"
+              style={{ "--reveal-index": 1 } as React.CSSProperties}
+            >
               <div className="flex items-center justify-between mb-3">
                 <span
                   style={{
@@ -162,24 +174,27 @@ export default function FinalCTA() {
                   lineHeight: 1.5,
                 }}
               >
-                128 City Road
+                20-22 Wenlock Road
                 <br />
-                London, EC1V 2NX
+                London, N1 7GU
               </p>
               <a
-                href="mailto:london@selfy.co.uk"
+                href="mailto:hello@selfy.photo"
                 className="mt-2 inline-block text-white/40 hover:text-white transition-colors"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "12px",
                 }}
               >
-                london@selfy.co.uk
+                hello@selfy.photo
               </a>
             </div>
 
             {/* Dubai */}
-            <div>
+            <div
+              className="reveal-item"
+              style={{ "--reveal-index": 2 } as React.CSSProperties}
+            >
               <div className="flex items-center justify-between mb-3">
                 <span
                   style={{
@@ -218,18 +233,18 @@ export default function FinalCTA() {
                 Dubai World Trade Centre
               </p>
               <a
-                href="mailto:dubai@selfy.co.uk"
+                href="mailto:hello@selfy.photo"
                 className="mt-2 inline-block text-white/40 hover:text-white transition-colors"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "12px",
                 }}
               >
-                dubai@selfy.co.uk
+                hello@selfy.photo
               </a>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

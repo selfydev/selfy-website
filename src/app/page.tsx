@@ -7,7 +7,10 @@ import TextReveal from "@/components/TextReveal";
 import StackedScrollVideos from "@/components/StackedScrollVideos";
 import FeaturesShowcase from "@/components/FeaturesShowcase";
 import NewSection from "@/components/NewSection";
-import CoverageMap from "@/components/CoverageMap";
+import dynamic from "next/dynamic";
+
+// Below the fold and bundles maplibre-gl (~700KB) — load it lazily.
+const CoverageMap = dynamic(() => import("@/components/CoverageMap"));
 import StoryCarousel from "@/components/StoryCarousel";
 import Pricing from "@/components/Pricing";
 import FinalCTA from "@/components/FinalCTA";
@@ -19,12 +22,16 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <Showcase />
+        <div id="discover">
+          <Showcase />
+        </div>
         <VideoSection />
         <PressCarousel />
         <TextReveal />
         <StackedScrollVideos />
-        <FeaturesShowcase />
+        <div id="how-it-works">
+          <FeaturesShowcase />
+        </div>
         <NewSection />
         <CoverageMap />
         <StoryCarousel />

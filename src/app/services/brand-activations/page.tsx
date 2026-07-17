@@ -2,8 +2,10 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 import Link from "next/link";
 import { useState } from "react";
+import type { CSSProperties } from "react";
 
 export default function BrandActivationsPage() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
@@ -125,8 +127,9 @@ export default function BrandActivationsPage() {
       <main className="bg-[#F5F5F5]">
         {/* Hero */}
         <section className="w-full bg-[#1D1D1D] px-6 lg:px-24 pt-32 pb-20">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <p
+              className="reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "14px",
@@ -140,6 +143,7 @@ export default function BrandActivationsPage() {
               Brand Activations
             </p>
             <h1
+              className="reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(48px, 8vw, 80px)",
@@ -147,28 +151,33 @@ export default function BrandActivationsPage() {
                 color: "#FFFFFF",
                 lineHeight: 1.1,
                 letterSpacing: "-2px",
-              }}
+                "--reveal-index": 1,
+              } as CSSProperties}
             >
               Turn moments into
               <br />
               movements.
             </h1>
             <p
-              className="mt-6 max-w-xl"
+              className="mt-6 max-w-xl reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+                "--reveal-index": 2,
+              } as CSSProperties}
             >
               Create immersive, shareable brand experiences that generate organic reach, capture valuable data, and leave lasting impressions.
             </p>
-            <div className="flex flex-wrap gap-4 mt-10">
+            <div
+              className="flex flex-wrap gap-4 mt-10 reveal-item"
+              style={{ "--reveal-index": 3 } as CSSProperties}
+            >
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "16px" }}
               >
                 Start a project
@@ -178,21 +187,25 @@ export default function BrandActivationsPage() {
               </Link>
               <a
                 href="#case-studies"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 transition-colors"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "16px" }}
               >
                 View case studies
               </a>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Stats */}
         <section className="px-6 lg:px-24 py-16 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            <Reveal className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center">
+                <div
+                  key={index}
+                  className="text-center reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
+                >
                   <p
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -217,15 +230,15 @@ export default function BrandActivationsPage() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Trusted By */}
         <section className="px-6 lg:px-24 py-16 border-b border-black/5">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <p
-              className="text-center mb-10"
+              className="text-center mb-10 reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "14px",
@@ -241,25 +254,28 @@ export default function BrandActivationsPage() {
               {brands.map((brand, index) => (
                 <span
                   key={index}
+                  className="reveal-item"
                   style={{
                     fontFamily: "var(--font-helvetica-now)",
                     fontSize: "18px",
                     fontWeight: 500,
                     color: "#CCCCCC",
-                  }}
+                    "--reveal-index": Math.min(index, 5),
+                  } as CSSProperties}
                 >
                   {brand}
                 </span>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Capabilities */}
         <section className="px-6 lg:px-24 py-24">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-16">
+            <Reveal className="mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -273,20 +289,26 @@ export default function BrandActivationsPage() {
                 Capabilities
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 56px)",
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Everything for a world-class activation
               </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </Reveal>
+            <Reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {capabilities.map((capability, index) => (
-                <div key={index} className="bg-white rounded-2xl p-8">
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl p-8 reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
+                >
                   <h3
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -311,15 +333,16 @@ export default function BrandActivationsPage() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Case Studies */}
         <section id="case-studies" className="px-6 lg:px-24 py-24 bg-[#1D1D1D]">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-16">
+            <Reveal className="mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -333,20 +356,26 @@ export default function BrandActivationsPage() {
                 Case Studies
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 56px)",
                   fontWeight: 500,
                   color: "#FFFFFF",
                   letterSpacing: "-1px",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Results that speak
               </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            </Reveal>
+            <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {caseStudies.map((study, index) => (
-                <div key={index} className="bg-white/5 rounded-2xl p-8">
+                <div
+                  key={index}
+                  className="bg-white/5 rounded-2xl p-8 reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
+                >
                   <span
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -390,15 +419,16 @@ export default function BrandActivationsPage() {
                   </ul>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Process */}
         <section className="px-6 lg:px-24 py-24 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-16">
+            <Reveal className="mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -412,20 +442,26 @@ export default function BrandActivationsPage() {
                 Our Process
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 56px)",
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 From brief to brilliant
               </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            </Reveal>
+            <Reveal className="grid grid-cols-1 md:grid-cols-5 gap-6">
               {process.map((step, index) => (
-                <div key={index} className="bg-[#F5F5F5] rounded-2xl p-6">
+                <div
+                  key={index}
+                  className="bg-[#F5F5F5] rounded-2xl p-6 reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
+                >
                   <span
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -462,15 +498,16 @@ export default function BrandActivationsPage() {
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* FAQ */}
         <section className="px-6 lg:px-24 py-24">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
+            <Reveal className="text-center mb-16">
               <p
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
@@ -484,23 +521,29 @@ export default function BrandActivationsPage() {
                 FAQ
               </p>
               <h2
+                className="reveal-item"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(36px, 5vw, 56px)",
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
-                }}
+                  "--reveal-index": 1,
+                } as CSSProperties}
               >
                 Common questions
               </h2>
-            </div>
-            <div className="space-y-4">
+            </Reveal>
+            <Reveal className="space-y-4">
               {faqs.map((faq, index) => (
-                <div key={index} className="rounded-2xl bg-white overflow-hidden">
+                <div
+                  key={index}
+                  className="rounded-2xl bg-white overflow-hidden reveal-item"
+                  style={{ "--reveal-index": Math.min(index, 5) } as CSSProperties}
+                >
                   <button
                     onClick={() => setActiveFaq(activeFaq === index ? null : index)}
-                    className="w-full flex items-center justify-between p-6 text-left"
+                    className="w-full flex items-center justify-between p-6 text-left press-scale"
                   >
                     <span
                       style={{
@@ -527,7 +570,7 @@ export default function BrandActivationsPage() {
                     </svg>
                   </button>
                   <div
-                    className={`transition-all duration-300 overflow-hidden ${
+                    className={`transition-[max-height] duration-300 overflow-hidden ${
                       activeFaq === index ? "max-h-96" : "max-h-0"
                     }`}
                   >
@@ -546,14 +589,15 @@ export default function BrandActivationsPage() {
                   </div>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* CTA */}
         <section className="px-6 lg:px-24 py-24 bg-[#1D1D1D]">
-          <div className="max-w-3xl mx-auto text-center">
+          <Reveal className="max-w-3xl mx-auto text-center">
             <h2
+              className="reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(36px, 5vw, 56px)",
@@ -567,21 +611,25 @@ export default function BrandActivationsPage() {
               Ready to create something remarkable?
             </h2>
             <p
-              className="mb-10"
+              className="mb-10 reveal-item"
               style={{
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+                "--reveal-index": 1,
+              } as CSSProperties}
             >
-              Let's discuss your next brand activation and design an experience that drives results.
+              Let&apos;s discuss your next brand activation and design an experience that drives results.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div
+              className="flex flex-wrap justify-center gap-4 reveal-item"
+              style={{ "--reveal-index": 2 } as CSSProperties}
+            >
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "16px" }}
               >
                 Start a project
@@ -590,14 +638,14 @@ export default function BrandActivationsPage() {
                 </svg>
               </Link>
               <a
-                href="mailto:activations@selfy.co.uk"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 transition-colors"
+                href="mailto:hello@selfy.photo"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 press-scale"
                 style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "16px" }}
               >
-                activations@selfy.co.uk
+                hello@selfy.photo
               </a>
             </div>
-          </div>
+          </Reveal>
         </section>
       </main>
       <Footer />

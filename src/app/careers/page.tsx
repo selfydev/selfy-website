@@ -1,6 +1,22 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Reveal from "@/components/Reveal";
+
+export const metadata: Metadata = {
+  title: "Careers — Join the Selfy Team",
+  description:
+    "Join the Selfy team. Explore careers with London's premium open-air photo booth company and help create memorable event experiences across the UK.",
+  alternates: {
+    canonical: "/careers",
+  },
+  openGraph: {
+    title: "Careers — Join the Selfy Team",
+    description:
+      "Join the Selfy team. Explore careers with London's premium open-air photo booth company and help create memorable event experiences across the UK.",
+  },
+};
 
 export default function CareersPage() {
   const openings = [
@@ -58,9 +74,11 @@ export default function CareersPage() {
         {/* Hero Section */}
         <section className="relative w-full min-h-[70vh] flex items-center bg-[#1D1D1D] px-6 lg:px-24 pt-32 pb-20">
           <div className="max-w-7xl mx-auto w-full">
-            <div className="max-w-3xl">
+            <Reveal className="max-w-3xl">
               <p
+                className="reveal-item"
                 style={{
+                  "--reveal-index": 0,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
                   fontWeight: 500,
@@ -68,50 +86,54 @@ export default function CareersPage() {
                   letterSpacing: "2px",
                   textTransform: "uppercase",
                   marginBottom: "24px",
-                }}
+                } as React.CSSProperties}
               >
                 Careers
               </p>
               <h1
+                className="reveal-item"
                 style={{
+                  "--reveal-index": 1,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(48px, 8vw, 80px)",
                   fontWeight: 500,
                   color: "#FFFFFF",
                   lineHeight: 1.1,
                   letterSpacing: "-2px",
-                }}
+                } as React.CSSProperties}
               >
-                Help us capture the world's best moments.
+                Help us capture the world&apos;s best moments.
               </h1>
               <p
-                className="mt-6 max-w-xl"
+                className="reveal-item mt-6 max-w-xl"
                 style={{
+                  "--reveal-index": 2,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "18px",
                   fontWeight: 400,
                   color: "rgba(255, 255, 255, 0.6)",
                   lineHeight: 1.6,
-                }}
+                } as React.CSSProperties}
               >
-                We're building a team of passionate people who believe in the power of bringing joy to events. Join us.
+                We&apos;re building a team of passionate people who believe in the power of bringing joy to events. Join us.
               </p>
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Benefits Section */}
         <section className="px-6 lg:px-24 py-24">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <h2
-              className="mb-12"
+              className="reveal-item mb-12"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "48px",
                 fontWeight: 500,
                 color: "#1D1D1D",
                 letterSpacing: "-1px",
-              }}
+              } as React.CSSProperties}
             >
               Why join Selfy?
             </h2>
@@ -119,7 +141,8 @@ export default function CareersPage() {
               {benefits.map((benefit, index) => (
                 <div
                   key={index}
-                  className="p-6 rounded-2xl bg-white"
+                  className="reveal-item p-6 rounded-2xl bg-white"
+                  style={{ "--reveal-index": Math.min(index + 1, 5) } as React.CSSProperties}
                 >
                   <p
                     style={{
@@ -134,30 +157,32 @@ export default function CareersPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* Openings Section */}
         <section className="px-6 lg:px-24 py-24 bg-white">
-          <div className="max-w-7xl mx-auto">
+          <Reveal className="max-w-7xl mx-auto">
             <h2
-              className="mb-12"
+              className="reveal-item mb-12"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "48px",
                 fontWeight: 500,
                 color: "#1D1D1D",
                 letterSpacing: "-1px",
-              }}
+              } as React.CSSProperties}
             >
               Open positions
             </h2>
             <div className="space-y-4">
               {openings.map((job, index) => (
-                <a
+                <Link
                   key={index}
-                  href="#"
-                  className="group flex flex-col md:flex-row md:items-center justify-between p-6 rounded-2xl bg-[#F5F5F5] hover:bg-[#1D1D1D] transition-all duration-300"
+                  href="/contact"
+                  className="reveal-item group flex flex-col md:flex-row md:items-center justify-between p-6 rounded-2xl bg-[#F5F5F5] hover:bg-[#1D1D1D] transition-colors duration-300"
+                  style={{ "--reveal-index": Math.min(index + 1, 5) } as React.CSSProperties}
                 >
                   <div>
                     <h3
@@ -220,42 +245,45 @@ export default function CareersPage() {
                       <path d="M7 17L17 7M17 7H7M17 7V17" />
                     </svg>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* CTA Section */}
         <section className="px-6 lg:px-24 py-24 bg-[#1D1D1D]">
-          <div className="max-w-7xl mx-auto text-center">
+          <Reveal className="max-w-7xl mx-auto text-center">
             <h2
+              className="reveal-item"
               style={{
+                "--reveal-index": 0,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "clamp(36px, 5vw, 56px)",
                 fontWeight: 500,
                 color: "#FFFFFF",
                 lineHeight: 1.1,
                 marginBottom: "24px",
-              }}
+              } as React.CSSProperties}
             >
-              Don't see the right role?
+              Don&apos;t see the right role?
             </h2>
             <p
-              className="max-w-xl mx-auto mb-10"
+              className="reveal-item max-w-xl mx-auto mb-10"
               style={{
+                "--reveal-index": 1,
                 fontFamily: "var(--font-helvetica-now)",
                 fontSize: "18px",
                 fontWeight: 400,
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.6,
-              }}
+              } as React.CSSProperties}
             >
-              We're always interested in meeting talented people. Send us your CV and let's chat.
+              We&apos;re always interested in meeting talented people. Send us your CV and let&apos;s chat.
             </p>
             <a
-              href="mailto:careers@selfy.co.uk"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium hover:bg-white/90 transition-all"
+              href="mailto:hello@selfy.photo"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium press-scale hover:bg-white/90"
               style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "15px" }}
             >
               Get in touch
@@ -263,7 +291,7 @@ export default function CareersPage() {
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
               </svg>
             </a>
-          </div>
+          </Reveal>
         </section>
       </main>
       <Footer />

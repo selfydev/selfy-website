@@ -1,6 +1,22 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Reveal from "@/components/Reveal";
+
+export const metadata: Metadata = {
+  title: "Support & Help with Your Booking",
+  description:
+    "Get help with your Selfy booking. Find support for photo galleries, event bookings and technical questions, or contact our London-based team directly.",
+  alternates: {
+    canonical: "/support",
+  },
+  openGraph: {
+    title: "Support & Help with Your Booking",
+    description:
+      "Get help with your Selfy booking. Find support for photo galleries, event bookings and technical questions, or contact our London-based team directly.",
+  },
+};
 
 export default function SupportPage() {
   const supportCategories = [
@@ -60,9 +76,11 @@ export default function SupportPage() {
         {/* Hero Section */}
         <section className="relative w-full min-h-[50vh] flex items-center bg-[#1D1D1D] px-6 lg:px-24 pt-32 pb-20">
           <div className="max-w-7xl mx-auto w-full">
-            <div className="max-w-3xl">
+            <Reveal className="max-w-3xl">
               <p
+                className="reveal-item"
                 style={{
+                  "--reveal-index": 0,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "14px",
                   fontWeight: 500,
@@ -70,51 +88,55 @@ export default function SupportPage() {
                   letterSpacing: "2px",
                   textTransform: "uppercase",
                   marginBottom: "24px",
-                }}
+                } as React.CSSProperties}
               >
                 Support
               </p>
               <h1
+                className="reveal-item"
                 style={{
+                  "--reveal-index": 1,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "clamp(48px, 8vw, 80px)",
                   fontWeight: 500,
                   color: "#FFFFFF",
                   lineHeight: 1.1,
                   letterSpacing: "-2px",
-                }}
+                } as React.CSSProperties}
               >
                 How can we help?
               </h1>
               <p
-                className="mt-6 max-w-xl"
+                className="reveal-item mt-6 max-w-xl"
                 style={{
+                  "--reveal-index": 2,
                   fontFamily: "var(--font-helvetica-now)",
                   fontSize: "18px",
                   fontWeight: 400,
                   color: "rgba(255, 255, 255, 0.6)",
                   lineHeight: 1.6,
-                }}
+                } as React.CSSProperties}
               >
                 Find answers, guides, and resources to help you get the most out of Selfy.
               </p>
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Support Categories */}
         <section className="px-6 lg:px-24 py-24">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Reveal className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {supportCategories.map((category, index) => (
                 <div
                   key={index}
-                  className="p-8 rounded-2xl bg-white"
+                  className="reveal-item p-8 rounded-2xl bg-white"
+                  style={{ "--reveal-index": Math.min(index, 5) } as React.CSSProperties}
                 >
                   <div className="w-12 h-12 rounded-full bg-[#F5F5F5] flex items-center justify-center mb-6">
                     {category.icon}
                   </div>
-                  <h3
+                  <h2
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
                       fontSize: "24px",
@@ -124,7 +146,7 @@ export default function SupportPage() {
                     }}
                   >
                     {category.title}
-                  </h3>
+                  </h2>
                   <p
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -159,15 +181,18 @@ export default function SupportPage() {
                   </ul>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Contact Support */}
         <section className="px-6 lg:px-24 py-24 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div>
+            <Reveal className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div
+                className="reveal-item"
+                style={{ "--reveal-index": 0 } as React.CSSProperties}
+              >
                 <h2
                   style={{
                     fontFamily: "var(--font-helvetica-now)",
@@ -195,8 +220,8 @@ export default function SupportPage() {
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <a
-                    href="mailto:support@selfy.co.uk"
-                    className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#1D1D1D] text-white font-medium hover:bg-black/80 transition-colors"
+                    href="mailto:hello@selfy.photo"
+                    className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#1D1D1D] text-white font-medium press-scale hover:bg-black/80"
                     style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "14px" }}
                   >
                     Email support
@@ -206,14 +231,17 @@ export default function SupportPage() {
                   </a>
                   <Link
                     href="/faq"
-                    className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-black/20 text-[#1D1D1D] font-medium hover:bg-black/5 transition-colors"
+                    className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-black/20 text-[#1D1D1D] font-medium press-scale hover:bg-black/5"
                     style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "14px" }}
                   >
                     View FAQ
                   </Link>
                 </div>
               </div>
-              <div className="p-8 rounded-2xl bg-[#F5F5F5]">
+              <div
+                className="reveal-item p-8 rounded-2xl bg-[#F5F5F5]"
+                style={{ "--reveal-index": 1 } as React.CSSProperties}
+              >
                 <h3
                   style={{
                     fontFamily: "var(--font-helvetica-now)",
@@ -241,7 +269,7 @@ export default function SupportPage() {
                       Email
                     </p>
                     <a
-                      href="mailto:support@selfy.co.uk"
+                      href="mailto:hello@selfy.photo"
                       style={{
                         fontFamily: "var(--font-helvetica-now)",
                         fontSize: "16px",
@@ -249,7 +277,7 @@ export default function SupportPage() {
                         color: "#1D1D1D",
                       }}
                     >
-                      support@selfy.co.uk
+                      hello@selfy.photo
                     </a>
                   </div>
                   <div>
@@ -267,7 +295,7 @@ export default function SupportPage() {
                       Phone
                     </p>
                     <a
-                      href="tel:+442012345678"
+                      href="tel:+442034882312"
                       style={{
                         fontFamily: "var(--font-helvetica-now)",
                         fontSize: "16px",
@@ -275,7 +303,7 @@ export default function SupportPage() {
                         color: "#1D1D1D",
                       }}
                     >
-                      +44 20 1234 5678
+                      +44 203 488 2312
                     </a>
                   </div>
                   <div>
@@ -305,7 +333,7 @@ export default function SupportPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
       </main>

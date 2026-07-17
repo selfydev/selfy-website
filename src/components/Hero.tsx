@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 
 const features = [
@@ -26,6 +24,7 @@ const Hero = () => {
         muted
         loop
         playsInline
+        aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover"
         poster="/videos/hero-poster.JPG"
       >
@@ -39,9 +38,9 @@ const Hero = () => {
       <div className="relative z-10 h-full flex flex-col justify-between px-6 lg:px-24">
         {/* Main Content - Centered vertically with offset */}
         <div className="flex-1 flex items-center pt-20">
-          <div className="animate-fade-in-up">
+          <div>
             {/* Headline */}
-            <h1 className="font-[family-name:var(--font-helvetica-now)] text-5xl sm:text-6xl md:text-7xl lg:text-[120px] font-medium text-white leading-[0.95] tracking-[-3px] max-w-4xl">
+            <h1 className="animate-fade-in-up font-[family-name:var(--font-helvetica-now)] text-5xl sm:text-6xl md:text-7xl lg:text-[120px] font-medium text-white leading-[0.95] tracking-[-3px] max-w-4xl">
               Moments,
               <br />
               reinvented
@@ -49,7 +48,7 @@ const Hero = () => {
 
             {/* Subheadline */}
             <p
-              className="mt-6 text-base sm:text-lg md:text-xl max-w-md leading-relaxed"
+              className="animate-fade-in-up animation-delay-100 mt-6 text-base sm:text-lg md:text-xl max-w-md leading-relaxed"
               style={{ color: "rgba(248, 248, 245, 0.6)" }}
             >
               Meet the open-air photo booth that captures joy, connection, and
@@ -58,8 +57,8 @@ const Hero = () => {
 
             {/* CTA Button */}
             <Link
-              href="#discover"
-              className="inline-block mt-8 px-8 py-4 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90 transition-colors"
+              href="/#discover"
+              className="animate-fade-in-up animation-delay-200 press-scale inline-block mt-8 px-8 py-4 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90"
             >
               Discover Selfy
             </Link>
@@ -81,9 +80,9 @@ const Hero = () => {
                   <div className="w-5 h-5 rounded-full bg-white/30" />
                 </div>
                 <div>
-                  <h3 className="text-white text-sm font-semibold">
+                  <h2 className="text-white text-sm font-semibold">
                     {feature.title}
-                  </h3>
+                  </h2>
                   <p className="text-white/60 text-sm">{feature.subtitle}</p>
                 </div>
               </div>
