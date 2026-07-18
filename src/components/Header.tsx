@@ -54,6 +54,16 @@ const Header = () => {
     };
   }, []);
 
+  // Lock body scroll while the full-screen mobile menu is open.
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMenuOpen]);
+
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -76,7 +86,7 @@ const Header = () => {
         isVisible ? "translate-y-0" : "-translate-y-full"
       } ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}
     >
-      <div className="mx-auto flex items-center justify-between px-6 py-3 lg:px-24">
+      <div className="relative z-50 mx-auto flex items-center justify-between px-6 py-3 lg:px-24">
         {/* Logo */}
         <Link href="/" aria-label="Selfy Home" className="relative">
           <Image
@@ -167,30 +177,57 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — full-viewport panel with staggered links */}
       <div
-        className={`lg:hidden absolute top-full left-0 right-0 backdrop-blur-md transition-[max-height,opacity] duration-300 overflow-hidden ${
-          isScrolled ? "bg-white/95" : "bg-black/95"
-        } ${isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"}`}
+        className={`lg:hidden fixed inset-0 z-40 h-[100dvh] transition-[opacity,visibility] duration-300 ${
+          isScrolled ? "bg-white" : "bg-black"
+        } ${
+          isMenuOpen
+            ? "opacity-100 visible"
+            : "opacity-0 invisible pointer-events-none"
+        }`}
+        aria-hidden={!isMenuOpen}
       >
-        <nav className="flex flex-col px-6 py-6" aria-label="Mobile navigation">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-lg py-3 border-b hover:opacity-80 transition-opacity ${
-                isScrolled ? "text-black border-black/10" : "text-white border-white/10"
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <div className="flex flex-col gap-3 mt-6">
+        <nav
+          className="flex h-full flex-col px-6 pt-24 pb-10"
+          aria-label="Mobile navigation"
+        >
+          {/* Links */}
+          <div className="flex flex-1 flex-col justify-center gap-1">
+            {navLinks.map((link, index) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMenuOpen(false)}
+                style={{
+                  transitionDelay: isMenuOpen ? `${100 + index * 60}ms` : "0ms",
+                }}
+                className={`font-[family-name:var(--font-helvetica-now)] text-4xl font-medium py-2 transition-[transform,opacity] duration-500 ease-out ${
+                  isMenuOpen
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0"
+                } ${isScrolled ? "text-black" : "text-white"}`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Auth actions anchored to the bottom */}
+          <div
+            style={{
+              transitionDelay: isMenuOpen
+                ? `${100 + navLinks.length * 60}ms`
+                : "0ms",
+            }}
+            className={`flex flex-col gap-4 transition-[transform,opacity] duration-500 ease-out ${
+              isMenuOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+          >
             <Link
               href="/signup"
               aria-label="Sign up for a Selfy account"
-              className={`text-lg hover:opacity-80 transition-opacity ${
+              className={`font-[family-name:var(--font-helvetica-now)] text-lg font-medium hover:opacity-80 transition-opacity ${
                 isScrolled ? "text-black" : "text-white"
               }`}
               onClick={() => setIsMenuOpen(false)}
@@ -200,7 +237,7 @@ const Header = () => {
             <Link
               href="/login"
               aria-label="Login to your Selfy account"
-              className={`press-scale text-lg font-medium px-6 py-3 rounded-full text-center ${
+              className={`press-scale font-[family-name:var(--font-helvetica-now)] text-lg font-bold px-6 py-4 rounded-full text-center ${
                 isScrolled
                   ? "bg-black text-white hover:bg-black/80"
                   : "bg-white text-black hover:bg-white/90"

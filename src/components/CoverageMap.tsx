@@ -261,10 +261,14 @@ export default function CoverageMap() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden"
+      className="relative w-full lg:h-screen overflow-hidden"
     >
-      {/* Map Container */}
-      <div ref={mapContainer} className="absolute inset-0 w-full h-full" />
+      {/* Map Container — its own block on mobile, full overlay on desktop */}
+      <div
+        ref={mapContainer}
+        className="relative h-[55vh] w-full lg:absolute lg:inset-0 lg:h-full"
+        style={{ touchAction: "pan-y" }}
+      />
 
       {/* Tooltips for markers */}
       {locations.map((location) => (
@@ -294,13 +298,11 @@ export default function CoverageMap() {
         </div>
       ))}
 
-      {/* Info Box - Bottom Left */}
+      {/* Info Box — full-width block under the map on mobile, floating card on desktop */}
       <div
-        className="absolute bottom-8 left-8 lg:bottom-16 lg:left-16 z-10 max-w-md"
+        className="relative z-10 w-full px-6 py-12 text-center lg:absolute lg:bottom-16 lg:left-16 lg:w-auto lg:max-w-md lg:p-12 lg:text-left lg:rounded-[20px]"
         style={{
           backgroundColor: "#1D1D1D",
-          borderRadius: "20px",
-          padding: "48px",
         }}
       >
         <h3
@@ -328,7 +330,7 @@ export default function CoverageMap() {
         </p>
 
         {/* Animated Stats */}
-        <div className="flex gap-8 mb-6">
+        <div className="flex justify-center lg:justify-start gap-8 mb-6">
           {stats.map((stat, index) => (
             <div key={stat.label}>
               <p

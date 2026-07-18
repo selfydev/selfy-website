@@ -258,3 +258,12 @@ h1, h2, h3, h4, h5, h6 {
     @apply font-sans;
   }
 }
+
+/* Hide the MapLibre / OpenFreeMap attribution on mobile only.
+   The full attribution remains visible on desktop (>=1024px). */
+@media (max-width: 1023px) {
+  .maplibregl-ctrl-attrib,
+  .maplibregl-ctrl-bottom-right {
+    display: none !important;
+  }
+}

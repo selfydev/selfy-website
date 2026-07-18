@@ -126,11 +126,10 @@ export default function NewSection() {
       {/* Header */}
       <Reveal className="text-center mb-16 px-6">
         <h2
-          className="reveal-item"
+          className="reveal-item text-[36px] sm:text-[48px] lg:text-[72px]"
           style={
             {
               fontFamily: "var(--font-helvetica-now)",
-              fontSize: "72px",
               fontWeight: 500,
               color: "#1D1D1D",
               lineHeight: 1.1,
@@ -157,8 +156,40 @@ export default function NewSection() {
         </p>
       </Reveal>
 
-      {/* Gallery Grid - 7 columns with staggered scroll effect */}
-      <div className="flex gap-3" style={{ padding: "0 120px" }}>
+      {/* Mobile: simple static 3-column grid (no parallax) */}
+      <div className="grid grid-cols-3 gap-3 px-6 lg:hidden">
+        {galleryItems.flat().map((item, index) => (
+          <div
+            key={index}
+            className="relative w-full rounded-lg overflow-hidden"
+            style={{ aspectRatio: "9/16" }}
+          >
+            {item.type === "video" ? (
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-hidden="true"
+                className="absolute inset-0 w-full h-full object-cover"
+              >
+                <source src={item.src} type="video/mp4" />
+              </video>
+            ) : (
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${item.src})`,
+                  backgroundColor: "#E0E0E0",
+                }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: 7 columns with staggered scroll effect */}
+      <div className="hidden lg:flex gap-3" style={{ padding: "0 120px" }}>
         {galleryItems.map((column, colIndex) => {
           const multiplier = getColumnMultiplier(colIndex);
           const offset = scrollProgress * maxOffset * multiplier;
@@ -206,7 +237,11 @@ export default function NewSection() {
 
       {/* Dynamic spacer: grows with the parallax so the next section always
           sits just below the pushed-down columns — no white void, no overlap. */}
-      <div aria-hidden style={{ height: `${scrollProgress * maxOffset}px` }} />
+      <div
+        aria-hidden
+        className="hidden lg:block"
+        style={{ height: `${scrollProgress * maxOffset}px` }}
+      />
     </section>
   );
 }

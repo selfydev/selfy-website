@@ -17,7 +17,7 @@ const features = [
 
 const Hero = () => {
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section className="relative w-full h-[100svh] lg:h-screen overflow-hidden">
       {/* Video Background */}
       <video
         autoPlay
@@ -37,7 +37,7 @@ const Hero = () => {
       {/* Content Container */}
       <div className="relative z-10 h-full flex flex-col justify-between px-6 lg:px-24">
         {/* Main Content - Centered vertically with offset */}
-        <div className="flex-1 flex items-center pt-20">
+        <div className="flex-1 flex items-center pt-16 lg:pt-20">
           <div>
             {/* Headline */}
             <h1 className="animate-fade-in-up font-[family-name:var(--font-helvetica-now)] text-5xl sm:text-6xl md:text-7xl lg:text-[120px] font-medium text-white leading-[0.95] tracking-[-3px] max-w-4xl">
@@ -48,7 +48,7 @@ const Hero = () => {
 
             {/* Subheadline */}
             <p
-              className="animate-fade-in-up animation-delay-100 mt-6 text-base sm:text-lg md:text-xl max-w-md leading-relaxed"
+              className="animate-fade-in-up animation-delay-100 mt-4 lg:mt-6 text-base sm:text-lg md:text-xl max-w-md leading-relaxed"
               style={{ color: "rgba(248, 248, 245, 0.6)" }}
             >
               Meet the open-air photo booth that captures joy, connection, and
@@ -58,7 +58,7 @@ const Hero = () => {
             {/* CTA Button */}
             <Link
               href="/#discover"
-              className="animate-fade-in-up animation-delay-200 press-scale inline-block mt-8 px-8 py-4 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90"
+              className="animate-fade-in-up animation-delay-200 press-scale inline-block mt-6 lg:mt-8 px-8 py-4 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90"
             >
               Discover Selfy
             </Link>
@@ -72,12 +72,12 @@ const Hero = () => {
             style={{ backgroundColor: "rgba(248, 248, 245, 0.15)" }}
             aria-hidden="true"
           />
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="flex items-start gap-3">
+              <div key={index} className="flex items-center sm:items-start gap-3">
                 {/* Feature Icon Placeholder */}
-                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                  <div className="w-5 h-5 rounded-full bg-white/30" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/30" />
                 </div>
                 <div>
                   <h2 className="text-white text-sm font-semibold">
