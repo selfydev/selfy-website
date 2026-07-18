@@ -105,6 +105,11 @@ export default function CoverageMap() {
     map.current.on("load", () => {
       if (!map.current) return;
 
+      // The mobile container settles to its final height after mount; force the
+      // canvas to repaint at the correct size so it fills the whole container
+      // (otherwise MapLibre paints at the initial size and leaves grey areas).
+      map.current.resize();
+
       // Add animated coverage circles as a source
       const rings = [50000, 100000, 200000]; // meters
 
@@ -247,7 +252,15 @@ export default function CoverageMap() {
     `;
     document.head.appendChild(style);
 
+    // Keep the canvas sized to its container across mobile layout settling and
+    // orientation/viewport changes.
+    const resizeObserver = new ResizeObserver(() => {
+      map.current?.resize();
+    });
+    resizeObserver.observe(mapContainer.current);
+
     return () => {
+      resizeObserver.disconnect();
       markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
       if (map.current) {

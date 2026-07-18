@@ -169,7 +169,7 @@ const Showcase = () => {
       />
 
       {/* Transparent booth cutouts float on the gradient, anchored to the bottom */}
-      <div className="absolute inset-x-0 bottom-0 h-[56vh] lg:h-full z-[2]">
+      <div className="absolute inset-x-0 bottom-0 h-[50svh] lg:h-full z-[2]">
         {content.items.map((item, index) => {
           // The flight case is boxy, so it sits centred and slightly smaller
           // rather than anchored to the bottom like the tall booths.
