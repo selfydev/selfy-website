@@ -3,72 +3,34 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
+import Link from "next/link";
 import { useState } from "react";
 import { submitForm, type FormStatus } from "@/lib/forms";
 
-const categories = ["All", "Weddings", "Corporate", "Industry", "Guides"];
-
-const featuredPost = {
-  title: "The Future of Event Photography: What's Next for 2025",
-  excerpt: "From AI-powered editing to real-time sharing, explore how technology is transforming the way we capture and share event memories.",
-  category: "Industry",
-  date: "January 2025",
-  readTime: "8 min read",
-};
-
-const posts = [
+const upcomingTopics = [
   {
-    title: "10 Ways to Make Your Wedding Photo Booth Unforgettable",
-    excerpt: "From custom props to themed overlays, here are our top tips for creating memorable moments.",
     category: "Weddings",
-    date: "December 2024",
-    readTime: "5 min read",
+    title: "How to choose a photo booth for your wedding",
+    excerpt:
+      "Open air or enclosed, prints or digital — everything to weigh up before you book.",
   },
   {
-    title: "The ROI of Photo Booths at Corporate Events",
-    excerpt: "How brands are using photo booths to drive engagement and capture leads.",
-    category: "Corporate",
-    date: "November 2024",
-    readTime: "7 min read",
+    category: "Behind the Scenes",
+    title: "Behind the scenes at a Selfy brand activation",
+    excerpt:
+      "What it takes to design, build, and run a photo experience for a major brand.",
   },
   {
-    title: "Behind the Scenes: Our Biggest Brand Activation Yet",
-    excerpt: "A look at how we executed a multi-location activation for a major tech company.",
-    category: "Corporate",
-    date: "October 2024",
-    readTime: "8 min read",
-  },
-  {
-    title: "How to Choose the Right Photo Booth for Your Event",
-    excerpt: "Open air vs enclosed, prints vs digital—our guide to selecting the perfect setup.",
-    category: "Guides",
-    date: "October 2024",
-    readTime: "4 min read",
-  },
-  {
-    title: "The Psychology of Event Photography",
-    excerpt: "Why photo booths create powerful memories and strengthen social connections.",
-    category: "Industry",
-    date: "September 2024",
-    readTime: "6 min read",
-  },
-  {
-    title: "Planning the Perfect Corporate Holiday Party",
-    excerpt: "Tips for event planners looking to create memorable year-end celebrations.",
-    category: "Corporate",
-    date: "September 2024",
-    readTime: "5 min read",
+    category: "Product Updates",
+    title: "Getting the most from your digital gallery",
+    excerpt:
+      "Tips for sharing, downloading, and reliving every moment after the event.",
   },
 ];
 
 export default function BlogPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<FormStatus>("idle");
-
-  const filteredPosts = activeCategory === "All"
-    ? posts
-    : posts.filter(post => post.category === activeCategory);
 
   const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -117,36 +79,180 @@ export default function BlogPage() {
                 letterSpacing: "-2px",
               } as React.CSSProperties}
             >
-              Insights & Stories
+              Insights & stories,
+              <br />
+              coming soon.
             </h1>
+            <p
+              className="reveal-item mt-6 max-w-xl"
+              style={{
+                "--reveal-index": 2,
+                fontFamily: "var(--font-helvetica-now)",
+                fontSize: "18px",
+                fontWeight: 400,
+                color: "rgba(255, 255, 255, 0.6)",
+                lineHeight: 1.6,
+              } as React.CSSProperties}
+            >
+              We&apos;re working on the Selfy blog — event photography tips,
+              behind-the-scenes looks at our favourite events, and product
+              updates from the team. Leave your email and we&apos;ll let you
+              know when the first stories land.
+            </p>
+
+            {/* Email capture */}
+            <div
+              className="reveal-item mt-10 max-w-md"
+              style={{ "--reveal-index": 3 } as React.CSSProperties}
+            >
+              {status !== "success" ? (
+                <>
+                  <form
+                    onSubmit={handleSubscribe}
+                    className="flex flex-col sm:flex-row gap-3"
+                  >
+                    <input type="hidden" name="form" value="newsletter" />
+                    <input
+                      type="email"
+                      name="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      aria-label="Email address"
+                      className="flex-1 px-5 py-3.5 rounded-full bg-white/10 border border-white/10 text-white placeholder:text-white/40 outline-none focus:border-white/30 transition-colors"
+                      style={{
+                        fontFamily: "var(--font-helvetica-now)",
+                        fontSize: "14px",
+                      }}
+                      required
+                    />
+                    <button
+                      type="submit"
+                      disabled={status === "submitting"}
+                      className={`press-scale px-6 py-3.5 rounded-full bg-white text-[#1D1D1D] font-medium hover:bg-white/90 whitespace-nowrap ${
+                        status === "submitting"
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }`}
+                      style={{
+                        fontFamily: "var(--font-helvetica-now)",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {status === "submitting" ? "Sending…" : "Notify me"}
+                    </button>
+                  </form>
+                  {status === "error" && (
+                    <p
+                      className="mt-3"
+                      role="alert"
+                      style={{
+                        fontFamily: "var(--font-helvetica-now)",
+                        fontSize: "13px",
+                        fontWeight: 400,
+                        color: "#FCA5A5",
+                      }}
+                    >
+                      Something went wrong — please email us instead.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p
+                  role="status"
+                  style={{
+                    fontFamily: "var(--font-helvetica-now)",
+                    fontSize: "16px",
+                    fontWeight: 500,
+                    color: "#FFFFFF",
+                  }}
+                >
+                  Thanks — you&apos;re on the list. We&apos;ll be in touch when
+                  the blog launches.
+                </p>
+              )}
+            </div>
           </Reveal>
         </section>
 
-        {/* Featured Post */}
-        <section className="px-6 lg:px-24 py-16">
-          <Reveal className="max-w-7xl mx-auto">
-            <a
-              href="#"
-              className="reveal-item group block bg-white rounded-2xl overflow-hidden"
-              style={{ "--reveal-index": 0 } as React.CSSProperties}
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2">
-                {/* Image */}
-                <div className="aspect-[4/3] lg:aspect-auto bg-[#E5E5E5] relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#CCCCCC" strokeWidth="1">
-                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                      <circle cx="8.5" cy="8.5" r="1.5" />
-                      <polyline points="21 15 16 10 5 21" />
-                    </svg>
-                  </div>
-                  <div className="absolute inset-0 bg-[#1D1D1D] opacity-0 group-hover:opacity-5 transition-opacity" />
-                </div>
-                {/* Content */}
-                <div className="p-8 lg:p-12 flex flex-col justify-center">
-                  <div className="flex items-center gap-4 mb-6">
+        {/* Teaser cards */}
+        <section className="px-6 lg:px-24 py-24">
+          <div className="max-w-7xl mx-auto">
+            <Reveal className="max-w-2xl mb-16">
+              <p
+                className="reveal-item"
+                style={{
+                  "--reveal-index": 0,
+                  fontFamily: "var(--font-helvetica-now)",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "#888888",
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  marginBottom: "16px",
+                } as React.CSSProperties}
+              >
+                In the works
+              </p>
+              <h2
+                className="reveal-item"
+                style={{
+                  "--reveal-index": 1,
+                  fontFamily: "var(--font-helvetica-now)",
+                  fontSize: "clamp(36px, 5vw, 48px)",
+                  fontWeight: 500,
+                  color: "#1D1D1D",
+                  letterSpacing: "-1px",
+                  lineHeight: 1.1,
+                } as React.CSSProperties}
+              >
+                A taste of what&apos;s coming
+              </h2>
+            </Reveal>
+
+            <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {upcomingTopics.map((topic, index) => (
+                <div
+                  key={topic.title}
+                  aria-disabled="true"
+                  className="reveal-item bg-white rounded-2xl overflow-hidden select-none"
+                  style={{ "--reveal-index": Math.min(index, 5) } as React.CSSProperties}
+                >
+                  {/* Greyed image placeholder */}
+                  <div className="aspect-[16/10] bg-[#EBEBEB] relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <svg
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#CCCCCC"
+                        strokeWidth="1"
+                        aria-hidden="true"
+                      >
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
+                      </svg>
+                    </div>
                     <span
-                      className="px-3 py-1 rounded-full bg-[#F5F5F5]"
+                      className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#1D1D1D]/80 backdrop-blur-sm"
+                      style={{
+                        fontFamily: "var(--font-helvetica-now)",
+                        fontSize: "11px",
+                        fontWeight: 500,
+                        color: "#FFFFFF",
+                        letterSpacing: "1px",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Coming soon
+                    </span>
+                  </div>
+                  {/* Content — intentionally muted */}
+                  <div className="p-6 opacity-60">
+                    <p
+                      className="mb-3"
                       style={{
                         fontFamily: "var(--font-helvetica-now)",
                         fontSize: "12px",
@@ -154,149 +260,9 @@ export default function BlogPage() {
                         color: "#888888",
                       }}
                     >
-                      {featuredPost.category}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-helvetica-now)",
-                        fontSize: "13px",
-                        fontWeight: 400,
-                        color: "#AAAAAA",
-                      }}
-                    >
-                      {featuredPost.date}
-                    </span>
-                  </div>
-                  <h2
-                    className="group-hover:opacity-70 transition-opacity"
-                    style={{
-                      fontFamily: "var(--font-helvetica-now)",
-                      fontSize: "clamp(24px, 3vw, 36px)",
-                      fontWeight: 500,
-                      color: "#1D1D1D",
-                      lineHeight: 1.2,
-                      marginBottom: "16px",
-                    }}
-                  >
-                    {featuredPost.title}
-                  </h2>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-helvetica-now)",
-                      fontSize: "16px",
-                      fontWeight: 400,
-                      color: "#888888",
-                      lineHeight: 1.6,
-                      marginBottom: "24px",
-                    }}
-                  >
-                    {featuredPost.excerpt}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <span
-                      style={{
-                        fontFamily: "var(--font-helvetica-now)",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        color: "#1D1D1D",
-                      }}
-                    >
-                      Read article
-                    </span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D1D1D" strokeWidth="2">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </Reveal>
-        </section>
-
-        {/* Category Filter */}
-        <section className="px-6 lg:px-24 pb-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center gap-2 overflow-x-auto">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`press-scale px-5 py-2 rounded-full whitespace-nowrap ${
-                    activeCategory === category
-                      ? "bg-[#1D1D1D] text-white"
-                      : "bg-white text-[#888888] hover:text-[#1D1D1D]"
-                  }`}
-                  style={{
-                    fontFamily: "var(--font-helvetica-now)",
-                    fontSize: "14px",
-                    fontWeight: 500,
-                  }}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Posts Grid */}
-        <section className="px-6 lg:px-24 pb-24">
-          <div className="max-w-7xl mx-auto">
-            <Reveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPosts.map((post, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="reveal-item group bg-white rounded-2xl overflow-hidden"
-                  style={{ "--reveal-index": Math.min(index, 5) } as React.CSSProperties}
-                >
-                  {/* Image */}
-                  <div className="aspect-[16/10] bg-[#E5E5E5] relative overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#CCCCCC" strokeWidth="1">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                        <circle cx="8.5" cy="8.5" r="1.5" />
-                        <polyline points="21 15 16 10 5 21" />
-                      </svg>
-                    </div>
-                    <div className="absolute inset-0 bg-[#1D1D1D] opacity-0 group-hover:opacity-10 transition-opacity" />
-                  </div>
-                  {/* Content */}
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <span
-                        style={{
-                          fontFamily: "var(--font-helvetica-now)",
-                          fontSize: "12px",
-                          fontWeight: 500,
-                          color: "#888888",
-                        }}
-                      >
-                        {post.category}
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-helvetica-now)",
-                          fontSize: "12px",
-                          fontWeight: 400,
-                          color: "#CCCCCC",
-                        }}
-                      >
-                        •
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-helvetica-now)",
-                          fontSize: "12px",
-                          fontWeight: 400,
-                          color: "#AAAAAA",
-                        }}
-                      >
-                        {post.readTime}
-                      </span>
-                    </div>
+                      {topic.category}
+                    </p>
                     <h3
-                      className="group-hover:opacity-70 transition-opacity"
                       style={{
                         fontFamily: "var(--font-helvetica-now)",
                         fontSize: "18px",
@@ -306,7 +272,7 @@ export default function BlogPage() {
                         marginBottom: "8px",
                       }}
                     >
-                      {post.title}
+                      {topic.title}
                     </h3>
                     <p
                       style={{
@@ -317,18 +283,18 @@ export default function BlogPage() {
                         lineHeight: 1.6,
                       }}
                     >
-                      {post.excerpt}
+                      {topic.excerpt}
                     </p>
                   </div>
-                </a>
+                </div>
               ))}
             </Reveal>
           </div>
         </section>
 
-        {/* Newsletter */}
+        {/* Closing note */}
         <section className="px-6 lg:px-24 py-24 bg-[#1D1D1D]">
-          <Reveal className="max-w-2xl mx-auto text-center">
+          <Reveal className="max-w-3xl mx-auto text-center">
             <h2
               className="reveal-item"
               style={{
@@ -338,13 +304,14 @@ export default function BlogPage() {
                 fontWeight: 500,
                 color: "#FFFFFF",
                 lineHeight: 1.1,
+                letterSpacing: "-1px",
                 marginBottom: "16px",
               } as React.CSSProperties}
             >
-              Stay in the loop
+              Planning an event in the meantime?
             </h2>
             <p
-              className="reveal-item mb-10"
+              className="reveal-item max-w-xl mx-auto mb-10"
               style={{
                 "--reveal-index": 1,
                 fontFamily: "var(--font-helvetica-now)",
@@ -354,60 +321,35 @@ export default function BlogPage() {
                 lineHeight: 1.6,
               } as React.CSSProperties}
             >
-              Subscribe for event tips, industry insights, and exclusive updates.
+              You don&apos;t have to wait for the blog — talk to the team and
+              we&apos;ll help you plan the perfect photo experience.
             </p>
-            {status !== "success" ? (
-              <>
-              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
-                <input type="hidden" name="form" value="newsletter" />
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  aria-label="Email address"
-                  className="flex-1 px-5 py-3.5 rounded-full bg-white/10 border border-white/10 text-white placeholder:text-white/40 outline-none focus:border-white/30 transition-colors"
-                  style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "14px" }}
-                  required
-                />
-                <button
-                  type="submit"
-                  disabled={status === "submitting"}
-                  className={`press-scale px-6 py-3.5 rounded-full bg-white text-[#1D1D1D] font-medium hover:opacity-90 ${
-                    status === "submitting" ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "14px" }}
-                >
-                  {status === "submitting" ? "Sending…" : "Subscribe"}
-                </button>
-              </form>
-              {status === "error" && (
-                <p
-                  className="mt-4"
-                  style={{
-                    fontFamily: "var(--font-helvetica-now)",
-                    fontSize: "14px",
-                    fontWeight: 400,
-                    color: "#FCA5A5",
-                  }}
-                >
-                  Something went wrong — please email us instead.
-                </p>
-              )}
-              </>
-            ) : (
-              <p
+            <div
+              className="reveal-item"
+              style={{ "--reveal-index": 2 } as React.CSSProperties}
+            >
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-[#1D1D1D] font-medium press-scale hover:opacity-90"
                 style={{
                   fontFamily: "var(--font-helvetica-now)",
-                  fontSize: "16px",
-                  fontWeight: 500,
-                  color: "#FFFFFF",
+                  fontSize: "15px",
                 }}
               >
-                Thanks for subscribing!
-              </p>
-            )}
+                Get in touch
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
           </Reveal>
         </section>
       </main>

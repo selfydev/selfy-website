@@ -5,9 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 const navLinks = [
-  { href: "/#how-it-works", label: "How it works" },
+  { href: "/how-it-works", label: "How it works" },
   { href: "/about", label: "About" },
-  { href: "/#pricing", label: "Pricing" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
@@ -120,14 +120,14 @@ const Header = () => {
         {/* Desktop Auth Buttons */}
         <div className="hidden lg:flex items-center gap-4">
           <Link
-            href="https://app.selfy.photo/signup"
+            href="/signup"
             aria-label="Sign up for a Selfy account"
             className={`font-[family-name:var(--font-helvetica-now)] text-[16px] font-medium hover:opacity-70 transition-opacity duration-300 ${textColor}`}
           >
             Sign up
           </Link>
           <Link
-            href="https://app.selfy.photo/login"
+            href="/login"
             aria-label="Login to your Selfy account"
             className={`press-scale font-[family-name:var(--font-helvetica-now)] text-[16px] font-bold px-12 py-2.5 rounded-full ${
               isScrolled
@@ -188,7 +188,7 @@ const Header = () => {
           ))}
           <div className="flex flex-col gap-3 mt-6">
             <Link
-              href="https://app.selfy.photo/signup"
+              href="/signup"
               aria-label="Sign up for a Selfy account"
               className={`text-lg hover:opacity-80 transition-opacity ${
                 isScrolled ? "text-black" : "text-white"
@@ -198,7 +198,7 @@ const Header = () => {
               Sign up
             </Link>
             <Link
-              href="https://app.selfy.photo/login"
+              href="/login"
               aria-label="Login to your Selfy account"
               className={`press-scale text-lg font-medium px-6 py-3 rounded-full text-center ${
                 isScrolled

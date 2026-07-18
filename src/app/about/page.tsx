@@ -180,9 +180,10 @@ export default function AboutPage() {
                   <p
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
-                      fontSize: "48px",
+                      fontSize: "clamp(32px, 4vw, 48px)",
                       fontWeight: 500,
                       color: "#1D1D1D",
+                      letterSpacing: "-1px",
                       lineHeight: 1,
                     }}
                   >
@@ -229,11 +230,11 @@ export default function AboutPage() {
                 style={{
                   "--reveal-index": 1,
                   fontFamily: "var(--font-helvetica-now)",
-                  fontSize: "clamp(32px, 5vw, 48px)",
+                  fontSize: "clamp(36px, 5vw, 48px)",
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
-                  lineHeight: 1.2,
+                  lineHeight: 1.1,
                   marginBottom: "24px",
                 } as React.CSSProperties}
               >
@@ -330,7 +331,7 @@ export default function AboutPage() {
         </section>
 
         {/* Timeline */}
-        <section className="px-6 lg:px-24 py-24 bg-white">
+        <section className="px-6 lg:px-24 py-24">
           <div className="max-w-7xl mx-auto">
             <Reveal className="max-w-2xl mb-16">
               <p
@@ -383,7 +384,7 @@ export default function AboutPage() {
                       {item.year}
                     </span>
                   </div>
-                  <div className="flex-1 p-6 rounded-2xl bg-[#F5F5F5]">
+                  <div className="flex-1 p-6 rounded-2xl bg-white">
                     <h3
                       style={{
                         fontFamily: "var(--font-helvetica-now)",
@@ -414,7 +415,7 @@ export default function AboutPage() {
         </section>
 
         {/* Recognition */}
-        <section className="px-6 lg:px-24 py-24">
+        <section className="px-6 lg:px-24 py-24 bg-white">
           <div className="max-w-7xl mx-auto">
             <Reveal className="text-center mb-16">
               <p
@@ -441,6 +442,7 @@ export default function AboutPage() {
                   fontWeight: 500,
                   color: "#1D1D1D",
                   letterSpacing: "-1px",
+                  lineHeight: 1.1,
                 } as React.CSSProperties}
               >
                 What sets us apart
@@ -451,7 +453,7 @@ export default function AboutPage() {
               {recognition.map((award, index) => (
                 <div
                   key={index}
-                  className="reveal-item p-6 rounded-2xl bg-white text-center"
+                  className="reveal-item p-6 rounded-2xl bg-[#F5F5F5] text-center"
                   style={{ "--reveal-index": Math.min(index, 5) } as React.CSSProperties}
                 >
                   <p
@@ -482,7 +484,7 @@ export default function AboutPage() {
         </section>
 
         {/* Offices */}
-        <section className="px-6 lg:px-24 py-24 bg-white">
+        <section className="px-6 lg:px-24 py-24">
           <div className="max-w-7xl mx-auto">
             <Reveal className="max-w-2xl mb-16">
               <p
@@ -518,7 +520,7 @@ export default function AboutPage() {
 
             <Reveal className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div
-                className="reveal-item p-8 rounded-2xl bg-[#F5F5F5]"
+                className="reveal-item p-8 rounded-2xl bg-white"
                 style={{ "--reveal-index": 0 } as React.CSSProperties}
               >
                 <p
@@ -571,7 +573,7 @@ export default function AboutPage() {
               </div>
 
               <div
-                className="reveal-item p-8 rounded-2xl bg-[#F5F5F5]"
+                className="reveal-item p-8 rounded-2xl bg-white"
                 style={{ "--reveal-index": 1 } as React.CSSProperties}
               >
                 <p

@@ -45,7 +45,12 @@ export default function ContactPage() {
     e.preventDefault();
     setStatus("submitting");
     const ok = await submitForm(e.currentTarget);
-    setStatus(ok ? "success" : "error");
+    if (ok) {
+      setStatus("success");
+      setFormData({ name: "", email: "", company: "", eventType: "", message: "" });
+    } else {
+      setStatus("error");
+    }
   };
 
   return (
@@ -270,6 +275,7 @@ export default function ContactPage() {
                       </button>
                       {status === "error" && (
                         <p
+                          role="alert"
                           style={{
                             fontFamily: "var(--font-helvetica-now)",
                             fontSize: "14px",
@@ -277,13 +283,32 @@ export default function ContactPage() {
                             color: "#DC2626",
                           }}
                         >
-                          Something went wrong — please email us instead.
+                          Something went wrong — please email us at{" "}
+                          <a href="mailto:hello@selfy.photo" className="underline">
+                            hello@selfy.photo
+                          </a>{" "}
+                          instead.
                         </p>
                       )}
                     </form>
                   </>
                 ) : (
-                  <div className="py-16 text-center">
+                  <div className="py-16 text-center" role="status">
+                    <div className="mx-auto mb-6 w-14 h-14 rounded-full bg-[#F5F5F5] flex items-center justify-center">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#1D1D1D"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                    </div>
                     <h3
                       style={{
                         fontFamily: "var(--font-helvetica-now)",
@@ -302,21 +327,34 @@ export default function ContactPage() {
                         fontWeight: 400,
                         color: "#888888",
                         lineHeight: 1.6,
+                        marginBottom: "24px",
                       }}
                     >
-                      We&apos;ll get back to you within 24 hours.
+                      Your message is on its way. We&apos;ll get back to you
+                      within 24 hours.
                     </p>
+                    <button
+                      type="button"
+                      onClick={() => setStatus("idle")}
+                      className="press-scale px-6 py-3 rounded-full border border-black/10 text-[#1D1D1D] font-medium hover:bg-[#F5F5F5] transition-colors"
+                      style={{
+                        fontFamily: "var(--font-helvetica-now)",
+                        fontSize: "14px",
+                      }}
+                    >
+                      Send another message
+                    </button>
                   </div>
                 )}
               </div>
 
               {/* Contact Info */}
-              <div
-                className="reveal-item space-y-8"
-                style={{ "--reveal-index": 1 } as React.CSSProperties}
-              >
+              <div className="space-y-8">
                 {/* Email & Phone */}
-                <div className="bg-white rounded-2xl p-8">
+                <div
+                  className="reveal-item bg-white rounded-2xl p-8"
+                  style={{ "--reveal-index": 1 } as React.CSSProperties}
+                >
                   <h3
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -387,7 +425,10 @@ export default function ContactPage() {
                 </div>
 
                 {/* Offices */}
-                <div className="bg-white rounded-2xl p-8">
+                <div
+                  className="reveal-item bg-white rounded-2xl p-8"
+                  style={{ "--reveal-index": 2 } as React.CSSProperties}
+                >
                   <h3
                     style={{
                       fontFamily: "var(--font-helvetica-now)",
@@ -485,7 +526,10 @@ export default function ContactPage() {
                 </div>
 
                 {/* Response time */}
-                <div className="bg-white rounded-2xl p-8">
+                <div
+                  className="reveal-item bg-white rounded-2xl p-8"
+                  style={{ "--reveal-index": 3 } as React.CSSProperties}
+                >
                   <p
                     style={{
                       fontFamily: "var(--font-helvetica-now)",

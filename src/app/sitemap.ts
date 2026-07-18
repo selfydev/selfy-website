@@ -14,6 +14,8 @@ const SERVICE_ROUTES = [
 
 const SECONDARY_ROUTES = [
   "/about",
+  "/how-it-works",
+  "/pricing",
   "/blog",
   "/careers",
   "/contact",
