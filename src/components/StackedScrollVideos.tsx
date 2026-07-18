@@ -21,19 +21,21 @@ export default function StackedScrollVideos() {
     const text = textRef.current;
 
     const ctx = gsap.context(() => {
-      // Phase 1: Grow video from initial size to full viewport
+      // Phase 1: Grow video from initial size to full viewport.
+      // Centering is done purely via `left` (7.5vw -> 0) so there is no
+      // width-dependent transform to freeze when ScrollTrigger refreshes.
       gsap.to(videoContainer, {
         width: "100vw",
         height: "100vh",
         top: 0,
         left: 0,
-        xPercent: 0,
         ease: "none",
         scrollTrigger: {
           trigger: section,
           start: "top 80%",
           end: "top top",
           scrub: true,
+          invalidateOnRefresh: true,
         },
       });
 
@@ -74,8 +76,7 @@ export default function StackedScrollVideos() {
               width: "85vw",
               height: "55vh",
               top: "5%",
-              left: "50%",
-              transform: "translateX(-50%)",
+              left: "7.5vw",
             }}
           >
             <video
