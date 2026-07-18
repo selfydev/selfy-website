@@ -16,10 +16,21 @@ const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // Distance the header sits below the top of the viewport, tracking the
+  // visible portion of the (non-sticky) announcement bar as it scrolls away.
+  const [barOffset, setBarOffset] = useState(0);
   const lastScrollYRef = useRef<number>(0);
 
   useEffect(() => {
     let rafId: number | null = null;
+
+    const readBarHeight = () => {
+      const raw = getComputedStyle(document.documentElement).getPropertyValue(
+        "--sb-h",
+      );
+      const parsed = parseFloat(raw);
+      return Number.isFinite(parsed) ? parsed : 0;
+    };
 
     const update = () => {
       rafId = null;
@@ -29,10 +40,12 @@ const Header = () => {
 
       const nextIsAtTop = currentScrollY < 50;
       const nextIsVisible = nextIsAtTop || currentScrollY <= lastScrollY;
+      const nextBarOffset = Math.max(0, readBarHeight() - currentScrollY);
 
       // Functional setState so we only trigger a render when the value changes
       setIsAtTop((prev) => (prev === nextIsAtTop ? prev : nextIsAtTop));
       setIsVisible((prev) => (prev === nextIsVisible ? prev : nextIsVisible));
+      setBarOffset((prev) => (prev === nextBarOffset ? prev : nextBarOffset));
       if (!nextIsVisible) {
         setIsMenuOpen((prev) => (prev ? false : prev));
       }
@@ -46,8 +59,14 @@ const Header = () => {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    // The bar can appear/animate without a scroll — re-evaluate on its signal.
+    window.addEventListener("selfy:sb-height", handleScroll);
+    window.addEventListener("resize", handleScroll);
+    handleScroll();
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("selfy:sb-height", handleScroll);
+      window.removeEventListener("resize", handleScroll);
       if (rafId !== null) {
         window.cancelAnimationFrame(rafId);
       }
@@ -82,7 +101,8 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-[transform,background-color,box-shadow] duration-300 ${
+      style={{ top: barOffset }}
+      className={`fixed left-0 right-0 z-50 transition-[transform,background-color,box-shadow] duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       } ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}
     >
