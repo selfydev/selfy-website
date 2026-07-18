@@ -127,6 +127,26 @@ export default function ContactPage() {
                     >
                       Send us a message
                     </h2>
+
+                    {/* Permanent fully-booked notice, close to the form */}
+                    <div className="mb-8 flex items-start gap-3 rounded-xl border-l-2 border-[#1D1D1D] bg-[#F5F5F5] p-4">
+                      <span
+                        aria-hidden="true"
+                        className="mt-[6px] h-2 w-2 shrink-0 rounded-full bg-[#1D1D1D]"
+                      />
+                      <p
+                        className="font-[family-name:var(--font-helvetica-now)] text-[14px] leading-relaxed"
+                        style={{ color: "rgba(29, 29, 29, 0.6)" }}
+                      >
+                        <span style={{ color: "#1D1D1D", fontWeight: 500 }}>
+                          We&apos;re fully booked.
+                        </span>{" "}
+                        We&apos;re not taking new bookings until Q3 2027 — but we&apos;d
+                        still love to hear from you. Send a message and our team will
+                        help however we can.
+                      </p>
+                    </div>
+
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <input type="hidden" name="form" value="contact" />
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
