@@ -517,9 +517,7 @@ export default function ContactPage() {
                           lineHeight: 1.6,
                         }}
                       >
-                        One Central, Building 4
-                        <br />
-                        Dubai World Trade Centre
+                        Business Bay, Dubai
                       </p>
                     </div>
                   </div>

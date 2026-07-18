@@ -228,9 +228,7 @@ export default function FinalCTA() {
                   lineHeight: 1.5,
                 }}
               >
-                One Central, Building 4
-                <br />
-                Dubai World Trade Centre
+                Business Bay, Dubai
               </p>
               <a
                 href="mailto:hello@selfy.photo"

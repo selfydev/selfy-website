@@ -57,9 +57,16 @@ const getColumnMultiplier = (colIndex: number) => {
   return multipliers[colIndex];
 };
 
+// Maximum pixels the center column (multiplier 1.0) drifts down.
+const MAX_OFFSET = 350;
+
 export default function NewSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  // Mirror of scrollProgress for use inside the scroll handler without
+  // re-subscribing, so we can subtract the dynamic spacer from the measured
+  // height and keep progress stable (no feedback loop).
+  const scrollProgressRef = useRef(0);
 
   useEffect(() => {
     let rafId: number | null = null;
@@ -75,13 +82,17 @@ export default function NewSection() {
       const triggerPoint = windowHeight * 0.75;
 
       if (rect.top < triggerPoint && rect.bottom > 0) {
-        // Calculate progress from when section enters to when we've scrolled through
+        // The measured height includes the dynamic bottom spacer; subtract it
+        // so the progress denominator stays fixed as the spacer grows.
+        const baseHeight = rect.height - scrollProgressRef.current * MAX_OFFSET;
         const scrolled = triggerPoint - rect.top;
-        const totalScrollDistance = rect.height + triggerPoint;
+        const totalScrollDistance = baseHeight + triggerPoint;
         const progress = Math.max(0, Math.min(1, scrolled / totalScrollDistance));
+        scrollProgressRef.current = progress;
         setScrollProgress(progress);
       } else {
         // Section not yet visible - keep columns aligned
+        scrollProgressRef.current = 0;
         setScrollProgress(0);
       }
     };
@@ -104,7 +115,7 @@ export default function NewSection() {
     };
   }, []);
 
-  const maxOffset = 350; // Maximum pixels the center column will move down
+  const maxOffset = MAX_OFFSET;
 
   return (
     <section
@@ -192,6 +203,10 @@ export default function NewSection() {
           );
         })}
       </div>
+
+      {/* Dynamic spacer: grows with the parallax so the next section always
+          sits just below the pushed-down columns — no white void, no overlap. */}
+      <div aria-hidden style={{ height: `${scrollProgress * maxOffset}px` }} />
     </section>
   );
 }

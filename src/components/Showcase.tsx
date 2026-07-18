@@ -26,9 +26,9 @@ const showcaseData: Record<"events" | "corporate", ShowcaseContent> = {
       "Built-in analytics",
     ],
     items: [
-      { image: "/images/showcase/events-1.jpg", alt: "Wedding photo booth" },
-      { image: "/images/showcase/events-2.jpg", alt: "Party celebration" },
-      { image: "/images/showcase/events-3.jpg", alt: "Birthday event" },
+      { image: "/images/showcase/events-1.webp", alt: "Selfy open-air photo booth, front view" },
+      { image: "/images/showcase/events-2.webp", alt: "Selfy photo booth, angled view" },
+      { image: "/images/showcase/events-3.webp", alt: "Selfy photo booth on its stand" },
     ],
   },
   corporate: {
@@ -42,9 +42,9 @@ const showcaseData: Record<"events" | "corporate", ShowcaseContent> = {
       "White-label options",
     ],
     items: [
-      { image: "/images/showcase/corporate-1.jpg", alt: "Corporate event" },
-      { image: "/images/showcase/corporate-2.jpg", alt: "Brand activation" },
-      { image: "/images/showcase/corporate-3.jpg", alt: "Company celebration" },
+      { image: "/images/showcase/corporate-1.webp", alt: "Selfy height-adjustable photo booth" },
+      { image: "/images/showcase/corporate-2.webp", alt: "Selfy booth, compact and portable" },
+      { image: "/images/showcase/corporate-3.webp", alt: "Selfy booth flight case" },
     ],
   },
 };
@@ -168,23 +168,25 @@ const Showcase = () => {
         }}
       />
 
-      {/* Carousel Images - reduced height on mobile, full on desktop, cut off at bottom, above gradient */}
+      {/* Transparent booth cutouts float on the gradient, anchored to the bottom */}
       <div className="absolute inset-x-0 bottom-0 h-[67vh] lg:h-full z-[2]">
         {content.items.map((item, index) => {
-          const isCorporate2 = item.image.includes("corporate-2");
+          // The flight case is boxy, so it sits centred and slightly smaller
+          // rather than anchored to the bottom like the tall booths.
+          const isCase = item.image.includes("corporate-3");
           return (
             <div
               key={`${activeCategory}-${index}`}
-              className={`absolute inset-x-0 bottom-0 transition-opacity duration-500 ease-in-out ${
-                index === currentIndex ? "opacity-100" : "opacity-0"
-              } ${isCorporate2 ? "h-[55vh] lg:h-full" : "h-full"}`}
+              className={`absolute inset-x-0 transition-opacity duration-500 ease-in-out ${
+                isCase ? "inset-y-0" : "bottom-0 top-[12%]"
+              } ${index === currentIndex ? "opacity-100" : "opacity-0"}`}
             >
               <Image
                 src={item.image}
                 alt={item.alt}
                 fill
                 sizes="100vw"
-                className="object-cover lg:object-contain object-bottom img-outline"
+                className={`object-contain ${isCase ? "object-center scale-[0.79]" : "object-bottom"}`}
                 priority={index === 0}
               />
             </div>

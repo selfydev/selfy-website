@@ -2,26 +2,48 @@
 
 import { useEffect, useRef } from "react";
 
+// `quote` holds each card's sub-text. Some are testimonial quotes (wrapped in
+// quotation marks); others describe the work we delivered for that client.
 const pressItems = [
   {
-    logo: "Mashable",
-    quote: "That fork!",
+    company: "Golden Goose",
+    quote: "Pop-up booth for their flagship store launch.",
   },
   {
-    logo: "Wallpaper*",
-    quote: "A new e-bike glides into town",
+    company: "Red Bull F1",
+    quote: "3 day brand activation across a race weekend.",
   },
   {
-    logo: "TC",
-    quote: '"Best e-bike for commuters"',
+    company: "Unilever",
+    quote: "Branded booths across a multi brand campaign.",
   },
   {
-    logo: "reddot winner",
-    quote: "best of the best",
+    company: "Spotify",
+    quote: "“Our launch photos were shared before the night even ended.”",
   },
   {
-    logo: "The Verge",
-    quote: '"It\'s truly a beast in all the best possible ways"',
+    company: "Instagram",
+    quote: "“Content people actually wanted to post.”",
+  },
+  {
+    company: "Samsung",
+    quote: "“Seamless, branded, and genuinely fun. Our team loved it.”",
+  },
+  {
+    company: "Wise",
+    quote: "Company party photo experience for 500 guests.",
+  },
+  {
+    company: "BFI",
+    quote: "Red carpet capture at a film premiere.",
+  },
+  {
+    company: "Atlantic Records",
+    quote: "“The artists loved it as much as the fans did.”",
+  },
+  {
+    company: "O2",
+    quote: "“Thousands of guests, not a single hiccup.”",
   },
 ];
 
@@ -29,7 +51,7 @@ const CardItem = ({ item }: { item: typeof pressItems[0] }) => (
   <div className="w-[280px] lg:w-[320px] flex-shrink-0">
     <div className="bg-white rounded-2xl p-8 h-[180px] flex flex-col items-center justify-center text-center">
       <div className="font-[family-name:var(--font-helvetica-now)] text-xl lg:text-2xl font-bold text-[#1D1D1D] mb-3">
-        {item.logo}
+        {item.company}
       </div>
       <p className="text-sm text-[#1D1D1D]/60 leading-relaxed">
         {item.quote}

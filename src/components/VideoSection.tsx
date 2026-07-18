@@ -43,7 +43,7 @@ const VideoSection = () => {
             The booth guests don&apos;t feel like they&apos;re using.
           </p>
           <Link
-            href="/work"
+            href="/how-it-works/"
             className="reveal-item press-scale inline-block mt-8 px-8 py-4 bg-white text-black text-sm font-medium rounded-full hover:bg-white/90"
             style={{ "--reveal-index": 2 } as CSSProperties}
           >

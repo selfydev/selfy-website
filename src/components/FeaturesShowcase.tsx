@@ -1,6 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function useReducedMotion(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(REDUCED_MOTION_QUERY);
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
+    () => false,
+  );
+}
 
 interface Feature {
   name: string;
@@ -26,279 +44,200 @@ const features: Feature[] = [
   { name: "Event-ready reliability", image: "/images/features/reliability.JPG", caption: "Built to perform under pressure." },
 ];
 
-const ITEM_HEIGHT = 68;
+const N = features.length;
+// Uniform slot height for every heading; one and two-line names both centre
+// inside this box, so the vertical rhythm stays even regardless of length.
+const ITEM_HEIGHT = 88;
+// Scroll distance allotted to each feature transition, as a fraction of the
+// viewport height. The section stays pinned for (N-1) * STEP_FACTOR screens.
+const STEP_FACTOR = 0.2;
 
 export default function FeaturesShowcase() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const lastIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [showEndText, setShowEndText] = useState(false);
-
-  // Use refs for synchronous state tracking in wheel handler
-  const activeIndexRef = useRef(0);
-  const showEndTextRef = useRef(false);
-  const isLockedRef = useRef(false);
-  const hasExitedRef = useRef<'up' | 'down' | null>(null);
-  const scrollAccumulator = useRef(0);
-
-  // Keep refs in sync with state
-  useEffect(() => {
-    activeIndexRef.current = activeIndex;
-  }, [activeIndex]);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    showEndTextRef.current = showEndText;
-  }, [showEndText]);
+    if (reducedMotion) return;
 
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (!sectionRef.current || !wrapperRef.current) return;
+    const section = sectionRef.current;
+    const list = listRef.current;
+    if (!section || !list) return;
 
-      const wrapperRect = wrapperRef.current.getBoundingClientRect();
-      const direction = e.deltaY > 0 ? 1 : -1;
+    const ctx = gsap.context(() => {
+      const total = () => window.innerHeight * STEP_FACTOR * (N - 1);
 
-      // Read current values from refs (synchronous) - MUST read before any checks
-      const currentIndex = activeIndexRef.current;
-      const currentShowEndText = showEndTextRef.current;
-      const currentLocked = isLockedRef.current;
-
-      // IF LOCKED: Handle everything here and return early
-      if (currentLocked) {
-        // ALWAYS prevent default when locked - no exceptions
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Define exit conditions
-        const atStart = currentIndex === 0 && !currentShowEndText;
-        const atEnd = currentIndex === features.length - 1 && currentShowEndText;
-
-        // Check for exit
-        if (direction < 0 && atStart) {
-          // Exit up
-          isLockedRef.current = false;
-          hasExitedRef.current = 'up';
-          scrollAccumulator.current = 0;
-          window.scrollBy({ top: -50, behavior: 'auto' });
-          return;
-        }
-
-        if (direction > 0 && atEnd) {
-          // Exit down
-          isLockedRef.current = false;
-          hasExitedRef.current = 'down';
-          scrollAccumulator.current = 0;
-          window.scrollBy({ top: 50, behavior: 'auto' });
-          return;
-        }
-
-        // Not exiting - accumulate scroll and navigate
-        scrollAccumulator.current += Math.abs(e.deltaY);
-
-        // Threshold for feature change
-        if (scrollAccumulator.current < 25) return;
-        scrollAccumulator.current = 0;
-
-        // Navigate features
-        if (direction > 0) {
-          // Scrolling down
-          if (currentIndex < features.length - 1) {
-            const newIndex = currentIndex + 1;
-            activeIndexRef.current = newIndex;
-            showEndTextRef.current = false;
-            setActiveIndex(newIndex);
-            setShowEndText(false);
-          } else if (!currentShowEndText) {
-            showEndTextRef.current = true;
-            setShowEndText(true);
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: () => `+=${total()}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: true,
+        // Settle on each feature when scrolling stops.
+        snap: {
+          snapTo: 1 / (N - 1),
+          duration: { min: 0.15, max: 0.5 },
+          ease: "power1.inOut",
+        },
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const raw = self.progress * (N - 1);
+          // Drive the list position directly for a smooth scrub, no re-render.
+          list.style.transform = `translateY(-${raw * ITEM_HEIGHT}px)`;
+          const idx = Math.round(raw);
+          if (idx !== lastIndexRef.current) {
+            lastIndexRef.current = idx;
+            setActiveIndex(idx);
           }
-        } else {
-          // Scrolling up
-          if (currentShowEndText) {
-            showEndTextRef.current = false;
-            setShowEndText(false);
-          } else if (currentIndex > 0) {
-            const newIndex = currentIndex - 1;
-            activeIndexRef.current = newIndex;
-            setActiveIndex(newIndex);
-          }
-        }
-        return;
-      }
+        },
+      });
+    }, section);
 
-      // NOT LOCKED: Check if we should lock
+    return () => ctx.revert();
+  }, [reducedMotion]);
 
-      // Check if wrapper is in the "engaged" zone
-      const isWrapperEngaged = wrapperRect.top <= 0 && wrapperRect.bottom > window.innerHeight;
-
-      // Check if we've scrolled past the wrapper
-      const isPastWrapper = wrapperRect.bottom <= window.innerHeight || wrapperRect.top > 0;
-
-      // Reset exit state when past wrapper
-      if (isPastWrapper) {
-        hasExitedRef.current = null;
-      }
-
-      // Don't re-lock if we just exited in the same direction
-      if (hasExitedRef.current === 'up' && direction < 0) return;
-      if (hasExitedRef.current === 'down' && direction > 0) return;
-
-      // Lock when wrapper is engaged
-      if (isWrapperEngaged) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Set initial position based on entry direction
-        if (direction < 0) {
-          // Entering from below
-          activeIndexRef.current = features.length - 1;
-          showEndTextRef.current = true;
-          setActiveIndex(features.length - 1);
-          setShowEndText(true);
-        } else {
-          // Entering from above
-          activeIndexRef.current = 0;
-          showEndTextRef.current = false;
-          setActiveIndex(0);
-          setShowEndText(false);
-        }
-
-        isLockedRef.current = true;
-        hasExitedRef.current = null;
-        scrollAccumulator.current = 0;
-      }
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
-  }, []);
-
-  const listOffset = activeIndex * ITEM_HEIGHT;
-
-  return (
-    <div
-      ref={wrapperRef}
-      className="relative w-full bg-[#1D1D1D]"
-      style={{ height: "200vh" }}
-    >
-      <section
-        ref={sectionRef}
-        className="sticky top-0 w-full bg-[#1D1D1D]"
-        style={{ height: "100vh" }}
-      >
-        <div className="h-screen w-full overflow-hidden">
-          <div className="h-full w-full" style={{ padding: "120px" }}>
-            <div className="h-full w-full flex gap-2">
-              {/* Left Side - Feature List */}
-              <div className="w-1/2 h-full bg-[#FFFFFF] relative overflow-hidden flex flex-col rounded-lg">
-                {/* Scrolling container - everything inside scrolls together */}
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    transform: `translateY(-${listOffset}px)`,
-                  }}
+  // Reduced-motion / no-JS friendly fallback: a plain vertical list, no pin.
+  if (reducedMotion) {
+    return (
+      <div className="w-full bg-[#1D1D1D] px-6 py-20 lg:px-24">
+        <p
+          className="mb-10 text-[#F5F5F5]"
+          style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "20px", fontWeight: 500 }}
+        >
+          Packed with intelligence.
+        </p>
+        <div className="grid gap-10 md:grid-cols-2">
+          {features.map((feature) => (
+            <div key={feature.name} className="overflow-hidden rounded-lg bg-[#2a2a2a]">
+              <div
+                className="aspect-[4/3] bg-cover bg-center"
+                style={{ backgroundImage: `url(${feature.image})` }}
+              />
+              <div className="p-6">
+                <h3
+                  className="text-white"
+                  style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "28px", fontWeight: 500 }}
                 >
-                  {/* Header text - at top */}
-                  <div
-                    className="pt-10 pl-28 pb-6"
-                    style={{
-                      fontFamily: "var(--font-helvetica-now)",
-                      fontSize: "20px",
-                      fontWeight: 500,
-                      color: "#1D1D1D",
-                    }}
-                  >
-                    Packed with intelligence.
-                  </div>
-
-                  {/* Feature items - positioned at 42% from top */}
-                  <div
-                    className="absolute left-28 right-6"
-                    style={{ top: "42%" }}
-                  >
-                    {features.map((feature, index) => {
-                      const distance = Math.abs(index - activeIndex);
-                      const opacity = index === activeIndex ? 1 : Math.max(0.2, 0.4 - distance * 0.05);
-
-                      return (
-                        <div
-                          key={feature.name}
-                          className="flex items-center"
-                          style={{
-                            height: `${ITEM_HEIGHT}px`,
-                            fontFamily: "var(--font-helvetica-now)",
-                            fontSize: "44px",
-                            fontWeight: 500,
-                            lineHeight: 1.1,
-                            color: `rgba(29, 29, 29, ${opacity})`,
-                          }}
-                        >
-                          {feature.name}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Footer text - fixed at bottom */}
-                <div
-                  className="absolute bottom-0 left-0 pb-10 pl-28 pt-6"
-                  style={{ opacity: showEndText ? 1 : 0 }}
-                >
-                  <p
-                    style={{
-                      fontFamily: "var(--font-helvetica-now)",
-                      fontSize: "20px",
-                      fontWeight: 500,
-                      color: "#1D1D1D",
-                    }}
-                  >
-                    Beautifully simple.
-                  </p>
-                </div>
-              </div>
-
-              {/* Right Side - Feature Image */}
-              <div className="w-1/2 h-full relative overflow-hidden rounded-lg">
-                {features.map((feature, index) => (
-                  <div
-                    key={feature.name}
-                    className="absolute inset-0"
-                    style={{
-                      opacity: index === activeIndex ? 1 : 0,
-                      pointerEvents: index === activeIndex ? "auto" : "none",
-                    }}
-                  >
-                    <div
-                      className="absolute inset-0 bg-cover bg-center"
-                      style={{
-                        backgroundImage: `url(${feature.image})`,
-                        backgroundColor: "#2a2a2a",
-                      }}
-                    />
-
-                    <div className="absolute bottom-6 right-6">
-                      <div
-                        className="px-3 py-2 rounded-md"
-                        style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
-                      >
-                        <p
-                          className="text-[14px] tracking-wide"
-                          style={{
-                            fontFamily: "var(--font-helvetica-now)",
-                            color: "#FFFFFF",
-                          }}
-                        >
-                          {feature.caption}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                  {feature.name}
+                </h3>
+                <p className="mt-2 text-white/60 text-sm">{feature.caption}</p>
               </div>
             </div>
+          ))}
+        </div>
+        <p
+          className="mt-12 text-[#F5F5F5]"
+          style={{ fontFamily: "var(--font-helvetica-now)", fontSize: "20px", fontWeight: 500 }}
+        >
+          Beautifully simple.
+        </p>
+      </div>
+    );
+  }
+
+  const atStart = activeIndex === 0;
+  const atEnd = activeIndex === N - 1;
+
+  return (
+    <section ref={sectionRef} className="relative w-full h-screen bg-[#1D1D1D] overflow-hidden">
+      <div className="h-full w-full p-6 lg:p-[120px]">
+        <div className="h-full w-full flex flex-col lg:flex-row gap-3">
+          {/* Heading list */}
+          <div className="relative w-full lg:w-1/2 h-1/2 lg:h-full bg-white rounded-lg overflow-hidden order-2 lg:order-1">
+            {/* Intro label, fades out once you move past the first feature */}
+            <div
+              className="absolute top-0 left-0 z-10 pt-6 pl-6 lg:pt-10 lg:pl-16"
+              style={{
+                fontFamily: "var(--font-helvetica-now)",
+                fontSize: "18px",
+                fontWeight: 500,
+                color: "#1D1D1D",
+                opacity: atStart ? 1 : 0,
+                transition: "opacity 0.4s ease",
+              }}
+            >
+              Packed with intelligence.
+            </div>
+
+            {/* Vertically centred window; the list translates within it */}
+            <div
+              className="absolute left-6 right-6 lg:left-16 lg:right-8"
+              style={{ top: "50%", transform: `translateY(-${ITEM_HEIGHT / 2}px)` }}
+            >
+              <div ref={listRef} style={{ willChange: "transform" }}>
+                {features.map((feature, index) => {
+                  const distance = Math.abs(index - activeIndex);
+                  const opacity = index === activeIndex ? 1 : Math.max(0.18, 0.4 - distance * 0.06);
+                  return (
+                    <div
+                      key={feature.name}
+                      className="flex items-center"
+                      style={{
+                        height: `${ITEM_HEIGHT}px`,
+                        fontFamily: "var(--font-helvetica-now)",
+                        fontSize: "clamp(26px, 4vw, 42px)",
+                        fontWeight: 500,
+                        lineHeight: 1.05,
+                        color: `rgba(29, 29, 29, ${opacity})`,
+                        transition: "color 0.3s ease",
+                      }}
+                    >
+                      {feature.name}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Outro label, fades in on the final feature */}
+            <div
+              className="absolute bottom-0 left-0 pb-6 pl-6 lg:pb-10 lg:pl-16"
+              style={{
+                fontFamily: "var(--font-helvetica-now)",
+                fontSize: "18px",
+                fontWeight: 500,
+                color: "#1D1D1D",
+                opacity: atEnd ? 1 : 0,
+                transition: "opacity 0.4s ease",
+              }}
+            >
+              Beautifully simple.
+            </div>
+          </div>
+
+          {/* Image */}
+          <div className="relative w-full lg:w-1/2 h-1/2 lg:h-full rounded-lg overflow-hidden order-1 lg:order-2 bg-[#2a2a2a]">
+            {features.map((feature, index) => (
+              <div
+                key={feature.name}
+                className="absolute inset-0"
+                style={{
+                  opacity: index === activeIndex ? 1 : 0,
+                  transition: "opacity 0.45s ease",
+                }}
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${feature.image})` }}
+                />
+                <div className="absolute bottom-6 right-6">
+                  <div className="px-3 py-2 rounded-md" style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}>
+                    <p
+                      className="text-[14px] tracking-wide"
+                      style={{ fontFamily: "var(--font-helvetica-now)", color: "#FFFFFF" }}
+                    >
+                      {feature.caption}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

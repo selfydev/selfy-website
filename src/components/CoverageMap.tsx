@@ -262,7 +262,6 @@ export default function CoverageMap() {
     <section
       ref={sectionRef}
       className="relative w-full h-screen overflow-hidden"
-      style={{ marginTop: "350px" }}
     >
       {/* Map Container */}
       <div ref={mapContainer} className="absolute inset-0 w-full h-full" />
