@@ -20,8 +20,8 @@ export const BODY =
   "Thank you for the incredible demand. We're not taking new bookings until Q3 2027. For anything at all, our team is happy to help.";
 
 // Bar copy — a shorter variant is used on small screens.
-export const BAR_TEXT = "Fully booked until Q3 2027 — for enquiries,";
-export const BAR_TEXT_SHORT = "Fully booked until Q3 2027 —";
+export const BAR_TEXT = "Fully booked until Q3 2027. For enquiries,";
+export const BAR_TEXT_SHORT = "Fully booked until Q3 2027,";
 export const BAR_CTA = "contact us";
 
 export const CONTACT_HREF = "/contact";

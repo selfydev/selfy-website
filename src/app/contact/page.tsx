@@ -129,7 +129,7 @@ export default function ContactPage() {
                     </h2>
 
                     {/* Permanent fully-booked notice, close to the form */}
-                    <div className="mb-8 flex items-start gap-3 rounded-xl border-l-2 border-[#1D1D1D] bg-[#F5F5F5] p-4">
+                    <div className="mb-8 flex items-start gap-3 rounded-xl bg-[#F5F5F5] p-4">
                       <span
                         aria-hidden="true"
                         className="mt-[6px] h-2 w-2 shrink-0 rounded-full bg-[#1D1D1D]"
@@ -141,7 +141,7 @@ export default function ContactPage() {
                         <span style={{ color: "#1D1D1D", fontWeight: 500 }}>
                           We&apos;re fully booked.
                         </span>{" "}
-                        We&apos;re not taking new bookings until Q3 2027 — but we&apos;d
+                        We&apos;re not taking new bookings until Q3 2027, but we&apos;d
                         still love to hear from you. Send a message and our team will
                         help however we can.
                       </p>
